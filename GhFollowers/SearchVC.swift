@@ -12,6 +12,7 @@ class SearchVC: UIViewController {
     let logoImageView = UIImageView()
     let usernameTextfield = GFTextfield()
     let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers") // 버튼의 이름이 변경되면 다시 변경해야하는 이슈가 발생 therefore Generic Type으로 이름을 작성하는 방법도 좋을 듯하다
+    var isUsernameEntered: Bool { return !usernameTextfield.text!.isEmpty }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +34,13 @@ class SearchVC: UIViewController {
         view.addGestureRecognizer(tap)
     }
     
+    // basic text validation
     @objc func pushFollowerListVC() {
+        guard isUsernameEntered else {
+            print("아무것도 없었습니다.")
+            return
+        }
+        
         let followListVC = FollowerListVC()
         followListVC.username = usernameTextfield.text
         followListVC.title = usernameTextfield.text
