@@ -37,13 +37,13 @@
 		BD8B64DF2B6F690C00CA1C95 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		BD8B64E62B6F8DFC00CA1C95 /* Follower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follower.swift; sourceTree = "<group>"; };
 		BD8B64E82B6F8E9A00CA1C95 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		BDD9B6FF2B6F94270014C57F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BDF6D8952B6CB5AF00778BED /* GhFollowers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GhFollowers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDF6D8982B6CB5AF00778BED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BDF6D89A2B6CB5AF00778BED /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		BDF6D89C2B6CB5AF00778BED /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		BDF6D8A12B6CB5B100778BED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BDF6D8A42B6CB5B100778BED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		BDF6D8A62B6CB5B100778BED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +95,6 @@
 				BDF6D89C2B6CB5AF00778BED /* ViewController.swift */,
 				BDF6D8A12B6CB5B100778BED /* Assets.xcassets */,
 				BDF6D8A32B6CB5B100778BED /* LaunchScreen.storyboard */,
-				BDF6D8A62B6CB5B100778BED /* Info.plist */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -133,6 +132,7 @@
 				BD8B64E32B6F775A00CA1C95 /* Extension */,
 				BD8B64E22B6F773300CA1C95 /* CustomViews */,
 				BD8B64E12B6F770600CA1C95 /* Screens */,
+				BDD9B6FF2B6F94270014C57F /* Info.plist */,
 			);
 			path = GhFollowers;
 			sourceTree = "<group>";
