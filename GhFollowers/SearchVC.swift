@@ -37,7 +37,7 @@ class SearchVC: UIViewController {
     // basic text validation
     @objc func pushFollowerListVC() {
         guard isUsernameEntered else {
-            print("아무것도 없었습니다.")
+            presentGFAlertOnMainThread(title: "유저 이름이 없습니다", message: "이름이 없어요", buttonTitle: "Ok")
             return
         }
         
