@@ -19,12 +19,25 @@ class SearchVC: UIViewController {
         configureLogoImageView()
         configureTextfield()
         configureCallToActionButton()
+        createDismissKeyboardTapGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.isNavigationBarHidden = true
+    }
+    
+    func createDismissKeyboardTapGesture() {
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func pushFollowerListVC() {
+        let followListVC = FollowerListVC()
+        followListVC.username = usernameTextfield.text
+        followListVC.title = usernameTextfield.text
+        navigationController?.pushViewController(followListVC, animated: true)
     }
     
     func configureLogoImageView() {
@@ -42,6 +55,7 @@ class SearchVC: UIViewController {
     
     func configureTextfield() {
         view.addSubview(usernameTextfield)
+        usernameTextfield.delegate = self
         
         NSLayoutConstraint.activate([
             usernameTextfield.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 48),
@@ -53,6 +67,7 @@ class SearchVC: UIViewController {
     
     func configureCallToActionButton() {
         view.addSubview(callToActionButton)
+        callToActionButton.addTarget(self, action: #selector(pushFollowerListVC), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             callToActionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
@@ -60,5 +75,13 @@ class SearchVC: UIViewController {
             callToActionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             callToActionButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+}
+
+
+extension SearchVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        pushFollowerListVC()
+        return true
     }
 }
