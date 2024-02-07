@@ -1,5 +1,5 @@
 //
-//  ErrorMessage.swift
+//  GFError.swift
 //  GhFollowers
 //
 //  Created by Porori on 2/7/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ErrorMessage: String {
+enum GFError: String, Error {
     case invalidUsername = "invalid request"
     case unableToComplete = "unable to finish request"
     case invalidResponse = "invalid response from server"
