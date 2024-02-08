@@ -11,6 +11,7 @@ class GFAvatarImageView: UIImageView {
     
     let networkManager = NetworkManager.shared
     let placeholderImage = UIImage(named: "avatar-placeholder")
+    let cache = NetworkManager.shared.cache
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +32,16 @@ class GFAvatarImageView: UIImageView {
     }
     
     func downloadImage(from urlString: String) {
-        networkManager.downloadImage(from: urlString)   
+        
+        let cacheKey = NSString(string: urlString)
+        
+        // check for cache
+        if let image = cache.object(forKey: cacheKey) {
+            self.image = image
+            return
+        }
+        
+        networkManager.downloadImage(from: urlString, with: cacheKey)
     }
 }
 

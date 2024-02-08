@@ -13,8 +13,10 @@ protocol NetworkManagerDelegate: AnyObject {
 
 class NetworkManager {
     static let shared = NetworkManager()
-    weak var delegate: NetworkManagerDelegate?
+    
     private let baseURL = "https://api.github.com/users/"
+    weak var delegate: NetworkManagerDelegate?
+    let cache = NSCache<NSString, UIImage>()
     
     private init() {}
     
@@ -54,7 +56,8 @@ class NetworkManager {
         task.resume()
     }
     
-    func downloadImage(from urlString: String) {
+    func downloadImage(from urlString: String, with cacheKey: NSString) {
+        
         guard let url = URL(string: urlString) else { return }
         
         let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
@@ -63,6 +66,8 @@ class NetworkManager {
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
             guard let data = data else { return }
             guard let image = UIImage(data: data) else { return }
+            
+            cache.setObject(image, forKey: cacheKey)
             
             // download the image, but make sure it's not strongly referenced
             DispatchQueue.main.async {
