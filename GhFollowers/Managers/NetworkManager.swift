@@ -57,23 +57,50 @@ class NetworkManager {
     }
     
     // naming Convention Change
-    func fetchImage(from urlString: String, with cacheKey: NSString) {
-        
+    //    func fetchImage(from urlString: String, with cacheKey: NSString) {
+    //
+    //        guard let url = URL(string: urlString) else { return }
+    //
+    //        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+    //            guard let self = self else { return }
+    //            if error != nil { return }
+    //            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
+    //            guard let data = data else { return }
+    //            guard let image = UIImage(data: data) else { return }
+    //
+    //            // caching the images
+    //            self.cache.setObject(image, forKey: cacheKey)
+    //
+    //            // download the image, but make sure it's not strongly referenced
+    //            DispatchQueue.main.async {
+    //                self.delegate?.didDownloadImage(image)
+    //            }
+    //        }
+    //        task.resume()
+    //    }
+    func fetchImage(from urlString: String, with cachingKey: NSString, completion: @escaping (Result<UIImage, GFError>) -> Void) {
         guard let url = URL(string: urlString) else { return }
         
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else { return }
-            if error != nil { return }
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
-            guard let data = data else { return }
-            guard let image = UIImage(data: data) else { return }
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(.invalidData))
+                return
+            }
             
-            // caching the images
-            self.cache.setObject(image, forKey: cacheKey)
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(.failure(.invalidResponse))
+                return
+            }
             
-            // download the image, but make sure it's not strongly referenced
+            guard let data = data, let image = UIImage(data: data) else {
+                completion(.failure(.invalidData))
+                return
+            }
+            
+            self.cache.setObject(image, forKey: cachingKey)
+            
             DispatchQueue.main.async {
-                self.delegate?.didDownloadImage(image)
+                completion(.success(image))
             }
         }
         task.resume()
