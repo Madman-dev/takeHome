@@ -5,12 +5,12 @@
 //  Created by Porori on 2/4/24.
 //
 
-import Foundation
+import UIKit
 
 class NetworkManager {
     static let shared = NetworkManager()
     
-    let baseURL = "https://api.github.com/users/"
+    private let baseURL = "https://api.github.com/users/"
     
     private init() {}
     
