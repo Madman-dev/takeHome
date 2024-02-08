@@ -56,7 +56,6 @@ class NetworkManager {
         task.resume()
     }
     
-    // naming Convention Change
         func fetchImage(from urlString: String, with cacheKey: NSString) {
     
             guard let url = URL(string: urlString) else { return }
@@ -78,32 +77,4 @@ class NetworkManager {
             }
             task.resume()
         }
-    
-//    func fetchImage(from urlString: String, with cachingKey: NSString, completion: @escaping (Result<UIImage, GFError>) -> Void) {
-//        guard let url = URL(string: urlString) else { return }
-//        
-//        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-//            if let error = error {
-//                completion(.failure(.invalidData))
-//                return
-//            }
-//            
-//            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-//                completion(.failure(.invalidResponse))
-//                return
-//            }
-//            
-//            guard let data = data, let image = UIImage(data: data) else {
-//                completion(.failure(.invalidData))
-//                return
-//            }
-//            
-//            self.cache.setObject(image, forKey: cachingKey)
-//            
-//            DispatchQueue.main.async {
-//                completion(.success(image))
-//            }
-//        }
-//        task.resume()
-//    }
 }

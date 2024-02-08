@@ -42,15 +42,6 @@ class GFAvatarImageView: UIImageView {
         }
         
         networkManager.fetchImage(from: urlString, with: cacheKey)
-        
-//        networkManager.fetchImage(from: urlString, with: cacheKey) { result in
-//            switch result {
-//            case .success(let image):
-//                self.image = image
-//            case .failure(let error):
-//                print("이미지 에러가 있습니다.")
-//            }
-//        }
     }
 }
 
