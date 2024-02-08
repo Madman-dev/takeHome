@@ -69,16 +69,13 @@ class NetworkManager {
             guard let image = UIImage(data: data) else { return }
             
             // caching the images
-            self.cacheImage(image, forKey: cacheKey)
+            self.cache.setObject(image, forKey: cacheKey)
             
+            // download the image, but make sure it's not strongly referenced
             DispatchQueue.main.async {
                 self.delegate?.didDownloadImage(image)
             }
         }
         task.resume()
-    }
-    
-    private func cacheImage(_ image: UIImage, forKey cacheKey: NSString) {
-        cache.setObject(image, forKey: cacheKey)
     }
 }
