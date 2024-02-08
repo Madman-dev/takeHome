@@ -9,14 +9,10 @@ import UIKit
 
 class FollowerListVC: UIViewController {
     
-    // collectionView's section
-    enum Section {
-        case main
-    }
+    enum Section { case main }
     
     var username: String!
     var followers: [Follower] = []
-    
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
 
@@ -36,10 +32,6 @@ class FollowerListVC: UIViewController {
     func configureViewController() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
-        // giving title Color
-//        navigationController?.navigationBar.largeTitleTextAttributes = [
-//            NSAttributedString.Key.foregroundColor: UIColor.white
-//        ]
     }
     
     func configureCollectionView() {
@@ -56,8 +48,8 @@ class FollowerListVC: UIViewController {
             
             switch result {
             case .success(let followers):
-                // currently has strong reference to FollowerListVC, fix through weak self
                 self.followers = followers
+                // capturing the newly updated Data onto the snapshot.
                 self.updateData()
                 
             case .failure(let error):

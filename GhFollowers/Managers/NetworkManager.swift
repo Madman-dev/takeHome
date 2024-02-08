@@ -7,9 +7,13 @@
 
 import UIKit
 
+protocol NetworkManagerDelegate: AnyObject {
+    func didDownloadImage(_ image: UIImage?)
+}
+
 class NetworkManager {
     static let shared = NetworkManager()
-    
+    weak var delegate: NetworkManagerDelegate?
     private let baseURL = "https://api.github.com/users/"
     
     private init() {}
@@ -47,7 +51,24 @@ class NetworkManager {
                 completed(.failure(.invalidData))
             }
         }
+        task.resume()
+    }
+    
+    func downloadImage(from urlString: String) {
+        guard let url = URL(string: urlString) else { return }
         
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else { return }
+            if error != nil { return }
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
+            guard let data = data else { return }
+            guard let image = UIImage(data: data) else { return }
+            
+            // download the image, but make sure it's not strongly referenced
+            DispatchQueue.main.async {
+                self.delegate?.didDownloadImage(image)
+            }
+        }
         task.resume()
     }
 }
