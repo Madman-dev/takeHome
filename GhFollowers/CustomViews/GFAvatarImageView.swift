@@ -41,7 +41,7 @@ class GFAvatarImageView: UIImageView {
             return
         }
         
-        networkManager.downloadImage(from: urlString, with: cacheKey)
+        networkManager.fetchImage(from: urlString, with: cacheKey)
     }
 }
 

@@ -56,7 +56,8 @@ class NetworkManager {
         task.resume()
     }
     
-    func downloadImage(from urlString: String, with cacheKey: NSString) {
+    // naming Convention Change
+    func fetchImage(from urlString: String, with cacheKey: NSString) {
         
         guard let url = URL(string: urlString) else { return }
         
@@ -67,13 +68,17 @@ class NetworkManager {
             guard let data = data else { return }
             guard let image = UIImage(data: data) else { return }
             
-            cache.setObject(image, forKey: cacheKey)
+            // caching the images
+            self.cacheImage(image, forKey: cacheKey)
             
-            // download the image, but make sure it's not strongly referenced
             DispatchQueue.main.async {
                 self.delegate?.didDownloadImage(image)
             }
         }
         task.resume()
+    }
+    
+    private func cacheImage(_ image: UIImage, forKey cacheKey: NSString) {
+        cache.setObject(image, forKey: cacheKey)
     }
 }
