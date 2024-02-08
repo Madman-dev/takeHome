@@ -43,17 +43,20 @@ class FollowerListVC: UIViewController {
     }
     
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createThreeColumnFlowlayout())
+        collectionView = UICollectionView(frame: view.bounds,
+                                          collectionViewLayout: UIHelper.createThreeColumnFlowlayout(in: view))
         view.addSubview(collectionView)
         collectionView.backgroundColor = .systemBackground
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseId)
     }
     
     func getFollowers() {
-        NetworkManager.shared.getFollowers(for: username, page: 1) { result in
+        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] result in
+            guard let self = self else { return }
             
             switch result {
             case .success(let followers):
+                // currently has strong reference to FollowerListVC, fix through weak self
                 self.followers = followers
                 self.updateData()
                 
@@ -61,20 +64,6 @@ class FollowerListVC: UIViewController {
                 self.presentGFAlertOnMainThread(title: "오류", message: error.rawValue, buttonTitle: "OK")
             }
         }
-    }
-    
-    // THE VC doesn't HAVE to know about the flowlayout. > Does it have to know?
-    func createThreeColumnFlowlayout() -> UICollectionViewFlowLayout {
-        let width = view.bounds.width
-        let padding: CGFloat = 12
-        let minimumItemSpacing: CGFloat = 10
-        let availableWidth = width - (padding * 2) - (minimumItemSpacing * 2)
-        let itemWidth = availableWidth / 3
-        
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        flowLayout.itemSize = CGSize(width: itemWidth, height: itemWidth + 40)
-        return flowLayout
     }
     
     func configureDataSource() {

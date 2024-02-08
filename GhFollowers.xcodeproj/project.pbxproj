@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD028BE02B745E9F0048E9DF /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD028BDF2B745E9F0048E9DF /* UIHelper.swift */; };
 		BD7813002B6CC564003D12E6 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7812FF2B6CC564003D12E6 /* SearchVC.swift */; };
 		BD7813022B6CC587003D12E6 /* FavoriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7813012B6CC587003D12E6 /* FavoriteVC.swift */; };
 		BD7813042B6CCF6B003D12E6 /* GFButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7813032B6CCF6B003D12E6 /* GFButton.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BD028BDF2B745E9F0048E9DF /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		BD7812FF2B6CC564003D12E6 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		BD7813012B6CC587003D12E6 /* FavoriteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteVC.swift; sourceTree = "<group>"; };
 		BD7813032B6CCF6B003D12E6 /* GFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFButton.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				BD9CC1762B735FEF00BF1BF4 /* ErrorMessage.swift */,
+				BD028BDF2B745E9F0048E9DF /* UIHelper.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 				BD8B64D82B6F611600CA1C95 /* GFTitleLabel.swift in Sources */,
 				BD8B64D62B6F3BE000CA1C95 /* FollowerListVC.swift in Sources */,
 				BD9CC1772B735FEF00BF1BF4 /* ErrorMessage.swift in Sources */,
+				BD028BE02B745E9F0048E9DF /* UIHelper.swift in Sources */,
 				BDA1A4142B6F973600BC73BF /* NetworkManager.swift in Sources */,
 				BD7813022B6CC587003D12E6 /* FavoriteVC.swift in Sources */,
 				BD8B64DA2B6F62AF00CA1C95 /* GFBodyLabel.swift in Sources */,
