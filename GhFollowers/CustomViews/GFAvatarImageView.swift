@@ -32,7 +32,6 @@ class GFAvatarImageView: UIImageView {
     }
     
     func downloadImage(from urlString: String) {
-        
         let cacheKey = NSString(string: urlString)
         
         // check for cache
@@ -40,13 +39,14 @@ class GFAvatarImageView: UIImageView {
             self.image = image
             return
         }
-        
-        networkManager.fetchImage(from: urlString, with: cacheKey)
+        self.networkManager.fetchImage(from: urlString, with: cacheKey)
     }
 }
 
 extension GFAvatarImageView: NetworkManagerDelegate {
     func didDownloadImage(_ image: UIImage?) {
-        self.image = image
+        DispatchQueue.main.async {
+            self.image = image
+        }
     }
 }

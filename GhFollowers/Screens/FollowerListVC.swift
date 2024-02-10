@@ -46,16 +46,19 @@ class FollowerListVC: UIViewController {
     }
     
     func getFollowers(username: String, page: Int) {
+        // animate loading Screen
+        showLoadingView()
+        
         NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
+            #warning("Dismiss the LoadingView")
             guard let self = self else { return }
+            self.dismissLoadingView()
             
             switch result {
-            case .success(let followers):
-                // check if the followers has more than 100
+            case .success(let newFollowers):
                 if followers.count < 100 { self.hasMoreFollowers = false }
-                self.followers.append(contentsOf: followers) // 최초 followers를 볼 수 없는 상황
+                self.followers.append(contentsOf: newFollowers)
                 self.updateData()
-                
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "오류", message: error.rawValue, buttonTitle: "OK")
             }
@@ -64,6 +67,7 @@ class FollowerListVC: UIViewController {
     
     func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, Follower>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, follower) -> UICollectionViewCell? in
+            //MARK: - 의심 포인트 2 > reuse될 때는 cell에 이미지가 Set되지만, 최초 할때는 안된다.
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.reuseId, for: indexPath) as! FollowerCell
             cell.set(followers: follower)
             return cell
@@ -81,9 +85,9 @@ class FollowerListVC: UIViewController {
 extension FollowerListVC: UICollectionViewDelegate {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
-        let offsetY         = scrollView.contentOffset.y // 현재의 y offset 위치
-        let contentHeight   = scrollView.contentSize.height // 전체 데이터의 높이
-        let height          = scrollView.frame.size.height // View's height - display's height
+        let offsetY         = scrollView.contentOffset.y
+        let contentHeight   = scrollView.contentSize.height
+        let height          = scrollView.frame.size.height
         
         if offsetY > contentHeight - height {
             guard hasMoreFollowers else { return }
