@@ -56,25 +56,23 @@ class NetworkManager {
         task.resume()
     }
     
-        func fetchImage(from urlString: String, with cacheKey: NSString) {
-    
-            guard let url = URL(string: urlString) else { return }
-    
-            let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-                guard let self = self else { return }
-                if error != nil { return }
-                guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
-                guard let data = data else { return }
-                guard let image = UIImage(data: data) else { return }
-    
-                // caching the images
-                self.cache.setObject(image, forKey: cacheKey)
-    
-                // download the image, but make sure it's not strongly referenced
-                DispatchQueue.main.async {
-                    self.delegate?.didDownloadImage(image)
-                }
-            }
-            task.resume()
+    func fetchImage(from urlString: String, with cacheKey: NSString) {
+        guard let url = URL(string: urlString) else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else { return }
+            if error != nil { return }
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { return }
+            guard let data = data else { return }
+            guard let image = UIImage(data: data) else { return }
+            
+            // caching the images
+            self.cache.setObject(image, forKey: cacheKey)
+            
+            // MARK: - 1. 의심 포인트
+            // download the image, but make sure it's not strongly referenced
+            self.delegate?.didDownloadImage(image)
         }
+        task.resume()
+    }
 }
