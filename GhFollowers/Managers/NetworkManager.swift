@@ -69,7 +69,6 @@ class NetworkManager {
             // caching the images
             self.cache.setObject(image, forKey: cacheKey)
             
-            // MARK: - 1. 의심 포인트
             // download the image, but make sure it's not strongly referenced
             self.delegate?.didDownloadImage(image)
         }

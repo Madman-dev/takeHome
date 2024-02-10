@@ -31,7 +31,7 @@ class GFAvatarImageView: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func downloadImage(from urlString: String) {
+    func downloadImage(from urlString: String, completion: @escaping () -> Void) {
         let cacheKey = NSString(string: urlString)
         
         // check for cache
@@ -40,6 +40,7 @@ class GFAvatarImageView: UIImageView {
             return
         }
         self.networkManager.fetchImage(from: urlString, with: cacheKey)
+        completion()
     }
 }
 

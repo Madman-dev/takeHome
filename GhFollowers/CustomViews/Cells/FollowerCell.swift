@@ -13,6 +13,8 @@ class FollowerCell: UICollectionViewCell {
     let avatarImageView = GFAvatarImageView(frame: .zero)
     let usernameLabel = GFTitleLabel(textAlignment: .center, fontSize: 16)
     
+    var imageCallback: (() -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -42,6 +44,10 @@ class FollowerCell: UICollectionViewCell {
     
     func set(followers: Follower) {
         self.usernameLabel.text = followers.login
-        self.avatarImageView.downloadImage(from: followers.avatarUrl)
+        self.avatarImageView.downloadImage(from: followers.avatarUrl) {
+            DispatchQueue.main.async {
+                self.imageCallback?()
+            }
+        }c
     }
 }
