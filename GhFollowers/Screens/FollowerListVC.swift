@@ -31,11 +31,6 @@ class FollowerListVC: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.collectionView.reloadData()
-    }
-    
     func configureViewController() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -61,9 +56,9 @@ class FollowerListVC: UIViewController {
             
             switch result {
             case .success(let newFollowers):
-                if followers.count < 100 { self.hasMoreFollowers = false }
+                if newFollowers.count < 100 { self.hasMoreFollowers = false }
                 self.followers.append(contentsOf: newFollowers)
-                DispatchQueue.main.async { self.updateData() }
+                self.updateData()
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "오류", message: error.rawValue, buttonTitle: "OK")
             }
@@ -83,7 +78,7 @@ class FollowerListVC: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
         snapshot.appendSections([.main])
         snapshot.appendItems(followers)
-        self.dataSource.apply(snapshot, animatingDifferences: true)
+        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
     }
 }
 
@@ -100,7 +95,6 @@ extension FollowerListVC: UICollectionViewDelegate {
         
         if offsetY > contentHeight - height {
             guard hasMoreFollowers else { return }
-            
             page += 1
             getFollowers(username: username, page: page)
         }
