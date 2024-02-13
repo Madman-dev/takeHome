@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BD028BE02B745E9F0048E9DF /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD028BDF2B745E9F0048E9DF /* UIHelper.swift */; };
+		BD2EDF782B7B5DB1009904AA /* GFEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2EDF772B7B5DB1009904AA /* GFEmptyStateView.swift */; };
 		BD7813002B6CC564003D12E6 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7812FF2B6CC564003D12E6 /* SearchVC.swift */; };
 		BD7813022B6CC587003D12E6 /* FavoriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7813012B6CC587003D12E6 /* FavoriteVC.swift */; };
 		BD7813042B6CCF6B003D12E6 /* GFButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7813032B6CCF6B003D12E6 /* GFButton.swift */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		BD028BDF2B745E9F0048E9DF /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
+		BD2EDF772B7B5DB1009904AA /* GFEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFEmptyStateView.swift; sourceTree = "<group>"; };
 		BD7812FF2B6CC564003D12E6 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		BD7813012B6CC587003D12E6 /* FavoriteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteVC.swift; sourceTree = "<group>"; };
 		BD7813032B6CCF6B003D12E6 /* GFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFButton.swift; sourceTree = "<group>"; };
@@ -67,6 +69,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD2EDF712B7B5D60009904AA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BD2EDF772B7B5DB1009904AA /* GFEmptyStateView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BD2EDF722B7B5D68009904AA /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				BD7813032B6CCF6B003D12E6 /* GFButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		BD2EDF732B7B5D6D009904AA /* Textfields */ = {
+			isa = PBXGroup;
+			children = (
+				BD7813052B6CE1A5003D12E6 /* GFTextfield.swift */,
+			);
+			path = Textfields;
+			sourceTree = "<group>";
+		};
+		BD2EDF742B7B5D72009904AA /* ImageViews */ = {
+			isa = PBXGroup;
+			children = (
+				BD9CC17B2B737CE900BF1BF4 /* GFAvatarImageView.swift */,
+			);
+			path = ImageViews;
+			sourceTree = "<group>";
+		};
+		BD2EDF752B7B5D76009904AA /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				BD8B64DD2B6F63E500CA1C95 /* GFAlertVC.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		BD2EDF762B7B5D8D009904AA /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				BD8B64D72B6F611600CA1C95 /* GFTitleLabel.swift */,
+				BD8B64D92B6F62AF00CA1C95 /* GFBodyLabel.swift */,
+			);
+			path = Labels;
+			sourceTree = "<group>";
+		};
 		BD8B64E12B6F770600CA1C95 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -80,13 +131,13 @@
 		BD8B64E22B6F773300CA1C95 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				BD2EDF762B7B5D8D009904AA /* Labels */,
+				BD2EDF752B7B5D76009904AA /* ViewController */,
+				BD2EDF742B7B5D72009904AA /* ImageViews */,
+				BD2EDF732B7B5D6D009904AA /* Textfields */,
+				BD2EDF722B7B5D68009904AA /* Buttons */,
+				BD2EDF712B7B5D60009904AA /* Views */,
 				BD9CC1782B737C5700BF1BF4 /* Cells */,
-				BD8B64DD2B6F63E500CA1C95 /* GFAlertVC.swift */,
-				BD7813032B6CCF6B003D12E6 /* GFButton.swift */,
-				BD7813052B6CE1A5003D12E6 /* GFTextfield.swift */,
-				BD8B64D72B6F611600CA1C95 /* GFTitleLabel.swift */,
-				BD8B64D92B6F62AF00CA1C95 /* GFBodyLabel.swift */,
-				BD9CC17B2B737CE900BF1BF4 /* GFAvatarImageView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -251,6 +302,7 @@
 				BDF6D89D2B6CB5AF00778BED /* ViewController.swift in Sources */,
 				BD7813062B6CE1A5003D12E6 /* GFTextfield.swift in Sources */,
 				BD7813042B6CCF6B003D12E6 /* GFButton.swift in Sources */,
+				BD2EDF782B7B5DB1009904AA /* GFEmptyStateView.swift in Sources */,
 				BDF6D8992B6CB5AF00778BED /* AppDelegate.swift in Sources */,
 				BD8B64E92B6F8E9A00CA1C95 /* User.swift in Sources */,
 				BD9CC17A2B737C7400BF1BF4 /* FollowerCell.swift in Sources */,
