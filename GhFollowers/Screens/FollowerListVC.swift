@@ -31,6 +31,11 @@ class FollowerListVC: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.collectionView.reloadData()
+    }
+    
     func configureViewController() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -58,7 +63,7 @@ class FollowerListVC: UIViewController {
             case .success(let newFollowers):
                 if followers.count < 100 { self.hasMoreFollowers = false }
                 self.followers.append(contentsOf: newFollowers)
-                self.updateData()
+                DispatchQueue.main.async { self.updateData() }
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "오류", message: error.rawValue, buttonTitle: "OK")
             }
@@ -70,9 +75,6 @@ class FollowerListVC: UIViewController {
 
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.reuseId, for: indexPath) as! FollowerCell
             cell.set(followers: follower)
-            cell.imageCallback = {
-                self.collectionView.reloadData()
-            }
             return cell
         })
     }
@@ -81,9 +83,7 @@ class FollowerListVC: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
         snapshot.appendSections([.main])
         snapshot.appendItems(followers)
-        DispatchQueue.main.async {
-            self.dataSource.apply(snapshot, animatingDifferences: true)
-        }
+        self.dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
@@ -93,6 +93,10 @@ extension FollowerListVC: UICollectionViewDelegate {
         let offsetY         = scrollView.contentOffset.y
         let contentHeight   = scrollView.contentSize.height
         let height          = scrollView.frame.size.height
+        
+        print(offsetY)
+        print(contentHeight)
+        print(height)
         
         if offsetY > contentHeight - height {
             guard hasMoreFollowers else { return }
