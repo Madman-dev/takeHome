@@ -129,7 +129,7 @@ extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
         updateData(on: filteredFollowers)
     }
     
-    // only 
+    // only when cancel button is tapped
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("취소 버튼이 눌렸습니다.")
         updateData(on: followers)
