@@ -13,6 +13,7 @@ class FollowerListVC: UIViewController {
     
     var username: String!
     var followers: [Follower] = []
+    var filteredFollowers: [Follower] = []
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
     var page: Int = 1
@@ -22,6 +23,7 @@ class FollowerListVC: UIViewController {
         super.viewDidLoad()
         configureViewController()
         configureCollectionView()
+        configureSearchController()
         getFollowers(username: username, page: page)
         configureDataSource()
     }
@@ -64,7 +66,7 @@ class FollowerListVC: UIViewController {
                     DispatchQueue.main.async { self.showEmptyStateView(with: message, in: self.view) }
                     return
                 }
-                self.updateData()
+                self.updateData(on: self.followers)
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "오류", message: error.rawValue, buttonTitle: "OK")
             }
@@ -80,11 +82,21 @@ class FollowerListVC: UIViewController {
         })
     }
     
-    func updateData() {
+    func updateData(on followers: [Follower]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
         snapshot.appendSections([.main])
         snapshot.appendItems(followers)
         DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
+    }
+    
+    func configureSearchController() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "뭔가요"
+        
+//        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
     }
 }
 
@@ -104,5 +116,22 @@ extension FollowerListVC: UICollectionViewDelegate {
             page += 1
             getFollowers(username: username, page: page)
         }
+    }
+}
+
+extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        // creating filter
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+        // filtering out the followers
+        filteredFollowers = followers.filter{ $0.login.lowercased().contains(filter.lowercased()) }
+        // placing them within the update method.
+        updateData(on: filteredFollowers)
+    }
+    
+    // only 
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("취소 버튼이 눌렸습니다.")
+        updateData(on: followers)
     }
 }
