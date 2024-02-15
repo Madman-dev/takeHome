@@ -18,6 +18,7 @@ class FollowerListVC: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
     var page: Int = 1
     var hasMoreFollowers: Bool = true
+    var isSearching: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,21 +118,31 @@ extension FollowerListVC: UICollectionViewDelegate {
             getFollowers(username: username, page: page)
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // need to display using followers of specific array depending on which Array its listening to.
+        let activeArray = isSearching ? filteredFollowers : followers
+        let follower = activeArray[indexPath.item]
+        
+        let destinationVC = UserInfoVC()
+        destinationVC.username = follower.login
+        let navVC = UINavigationController(rootViewController: destinationVC)
+        present(navVC, animated: true)
+    }
 }
 
 extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
+    
     func updateSearchResults(for searchController: UISearchController) {
-        // creating filter
         guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
-        // filtering out the followers
+        isSearching = true
         filteredFollowers = followers.filter{ $0.login.lowercased().contains(filter.lowercased()) }
-        // placing them within the update method.
         updateData(on: filteredFollowers)
     }
     
-    // only when cancel button is tapped
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("취소 버튼이 눌렸습니다.")
+        isSearching = false
         updateData(on: followers)
     }
 }
