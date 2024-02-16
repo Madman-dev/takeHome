@@ -28,8 +28,8 @@ class GFTextfield: UITextField {
         tintColor = .label
         textAlignment = .center
         font = UIFont.preferredFont(forTextStyle: .title2)
-        adjustsFontSizeToFitWidth = true // automatic resize
-        minimumFontSize = 12 // limits the font minimum font size
+        adjustsFontSizeToFitWidth = true
+        minimumFontSize = 12
         
         backgroundColor = .tertiarySystemBackground
         autocorrectionType = .no

@@ -7,7 +7,6 @@
 
 import UIKit
 
-// UIComponent를 이렇게 구분하는구나
 class GFTitleLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,7 +20,6 @@ class GFTitleLabel: UILabel {
     init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
         super.init(frame: .zero)
         self.textAlignment = textAlignment
-        // Always Bold
         self.font = UIFont.systemFont(ofSize: fontSize, weight: .bold)
         configure()
     }

@@ -9,7 +9,6 @@ import UIKit
 
 class FollowerCell: UICollectionViewCell {
     static let reuseId = "FollowerCell"
-    
     let avatarImageView = GFAvatarImageView(frame: .zero)
     let usernameLabel = GFTitleLabel(textAlignment: .center, fontSize: 16)
     

@@ -15,7 +15,6 @@ class GFAlertVC: UIViewController {
     let messageLabel = GFBodyLabel(textAlignment: .center)
     let actionButton = GFButton(backgroundColor: .systemPink, title: "OK!")
     
-    // alertController이 사용되는 call site마다 다르기에 property를 선언
     var alertTitle: String?
     var alertMessage: String?
     var buttonTitle: String?
