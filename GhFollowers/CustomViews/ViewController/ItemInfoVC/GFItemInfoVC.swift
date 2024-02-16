@@ -13,6 +13,16 @@ class GFItemInfoVC: UIViewController {
     let firstItemInfoView = GFItemInfoView()
     let secondItemInfoView = GFItemInfoView()
     let actionButton = GFButton() // basic button initialized initially. We don't know what colors the content will be YET
+    var user: User!
+    
+    init(user: User) {
+        super.init(nibName: nil, bundle: nil)
+        self.user = user
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
