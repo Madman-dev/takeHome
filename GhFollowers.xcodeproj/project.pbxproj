@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BD028BE02B745E9F0048E9DF /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD028BDF2B745E9F0048E9DF /* UIHelper.swift */; };
+		BD1E44D52B7F41A400E4253C /* GFItemInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1E44D42B7F41A400E4253C /* GFItemInfoView.swift */; };
 		BD2EDF782B7B5DB1009904AA /* GFEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2EDF772B7B5DB1009904AA /* GFEmptyStateView.swift */; };
 		BD7813002B6CC564003D12E6 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7812FF2B6CC564003D12E6 /* SearchVC.swift */; };
 		BD7813022B6CC587003D12E6 /* FavoriteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7813012B6CC587003D12E6 /* FavoriteVC.swift */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		BD028BDF2B745E9F0048E9DF /* UIHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
+		BD1E44D42B7F41A400E4253C /* GFItemInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFItemInfoView.swift; sourceTree = "<group>"; };
 		BD2EDF772B7B5DB1009904AA /* GFEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFEmptyStateView.swift; sourceTree = "<group>"; };
 		BD7812FF2B6CC564003D12E6 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		BD7813012B6CC587003D12E6 /* FavoriteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteVC.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				BD2EDF772B7B5DB1009904AA /* GFEmptyStateView.swift */,
+				BD1E44D42B7F41A400E4253C /* GFItemInfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				BD028BE02B745E9F0048E9DF /* UIHelper.swift in Sources */,
 				BDA1A4142B6F973600BC73BF /* NetworkManager.swift in Sources */,
 				BD7813022B6CC587003D12E6 /* FavoriteVC.swift in Sources */,
+				BD1E44D52B7F41A400E4253C /* GFItemInfoView.swift in Sources */,
 				BD8B64DA2B6F62AF00CA1C95 /* GFBodyLabel.swift in Sources */,
 				BDCEE79B2B7F144A009B4F9D /* Constants.swift in Sources */,
 			);
