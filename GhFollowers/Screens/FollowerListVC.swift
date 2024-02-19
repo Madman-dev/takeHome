@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FollowerListVCDelegate: AnyObject {
+    func didRequestFollower(for username: String)
+}
+
 class FollowerListVC: UIViewController {
     
     enum Section { case main }
@@ -125,6 +129,9 @@ extension FollowerListVC: UICollectionViewDelegate {
         let follower = activeArray[indexPath.item]
         
         let destinationVC = UserInfoVC()
+        
+        // FollowerListVCDelegate 채택
+        destinationVC.delegate = self
         destinationVC.username = follower.login
         let navVC = UINavigationController(rootViewController: destinationVC)
         present(navVC, animated: true)
@@ -144,5 +151,24 @@ extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
         print("취소 버튼이 눌렸습니다.")
         isSearching = false
         updateData(on: followers)
+    }
+}
+
+extension FollowerListVC: FollowerListVCDelegate {
+    func didRequestFollower(for username: String) {
+        //get followers of username
+        // self.username = username > 필요 없음
+        title = username
+        page = 1
+        
+        // 화면 reset
+        followers.removeAll()
+        filteredFollowers.removeAll()
+        
+        // scroll the collectionview to the top > 현재는 barItem이 존재하기 때문에 조금 내려 앉도록 수정
+        collectionView.setContentOffset(CGPoint(x: 0, y: -150), animated: true)
+        
+        // updating the networkcall again
+        getFollowers(username: username, page: page)
     }
 }

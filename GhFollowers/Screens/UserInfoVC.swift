@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol UserInfoVCDelegate: AnyObject {
+    func didTapGitHubProfile(for user: User)
+    func didTapGetFollowers(for user: User)
+}
+
 class UserInfoVC: UIViewController {
     
     let headerView = UIView()
@@ -14,6 +19,7 @@ class UserInfoVC: UIViewController {
     let itemViewTwo = UIView()
     let dateLabel = GFBodyLabel(textAlignment: .center)
     var itemViews: [UIView] = []
+    weak var delegate: FollowerListVCDelegate!
     
     var username: String!
 
@@ -21,7 +27,6 @@ class UserInfoVC: UIViewController {
         super.viewDidLoad()
         configureViewController()
         
-        // headerview가 그려지는 속도가 느리다. 0.5초 뒤 constraint가 잡히는 것처럼 보이는 중
         layoutUI()
         getUserInfo()
     }
@@ -38,25 +43,33 @@ class UserInfoVC: UIViewController {
             
             switch result {
             case .success(let user):
-                DispatchQueue.main.async {
-                    self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
-                    self.add(childVC: GFRepoItemVC(user: user), to: self.itemViewOne)
-                    self.add(childVC: GFFollowerItemVC(user: user), to: self.itemViewTwo)
-                    
-                    // self.dateLabel.text = user.createdAt // 사용자 github profile이 생성된 일정
-                    self.dateLabel.text = "Using Github since, \(user.createdAt.convertToDisplayFormat())"
-                }
+                
+                // simple to understand code
+                DispatchQueue.main.async { self.configureUIElementsWithUser(user: user) }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
     
+    func configureUIElementsWithUser(user: User) {
+        let repoItemVC = GFRepoItemVC(user: user)
+        let followerItemVC = GFFollowerItemVC(user: user)
+        repoItemVC.delegate = self
+        followerItemVC.delegate = self
+        
+        self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
+        self.add(childVC: repoItemVC, to: self.itemViewOne)
+        self.add(childVC: followerItemVC, to: self.itemViewTwo)
+        
+        // self.dateLabel.text = user.createdAt // 사용자 github profile이 생성된 일정
+        self.dateLabel.text = "Using Github since, \(user.createdAt.convertToDisplayFormat())"
+    }
+    
     func layoutUI() {
         let padding: CGFloat = 20
         let itemHeight: CGFloat = 140
         
-        // 날짜 레이블 추가
         itemViews = [headerView, itemViewOne, itemViewTwo, dateLabel]
         
         for itemView in itemViews {
@@ -84,16 +97,37 @@ class UserInfoVC: UIViewController {
         ])
     }
     
-    // UIViewController를 현재 viewcontroller로 옮기기 위한 작업 - but to a containerView, not the UserInfoVC
     func add(childVC: UIViewController, to containerView: UIView) {
         addChild(childVC)
         containerView.addSubview(childVC.view)
         
         childVC.view.frame = containerView.bounds
-        childVC.didMove(toParent: self) // why would we need to call the following?
+        childVC.didMove(toParent: self)
     }
     
     @objc func dismissVC() {
         dismiss(animated: true)
+    }
+}
+
+extension UserInfoVC: UserInfoVCDelegate {
+    func didTapGitHubProfile(for user: User) {
+        guard let url = URL(string: user.htmlUrl) else {
+            presentGFAlertOnMainThread(title: "URL 오류", message: "URL이 없습니다.", buttonTitle: "Ok")
+            return
+        }
+        // show safari controller
+        presentSafariVC(with: url)
+    }
+    
+    func didTapGetFollowers(for user: User) {
+        // dismiss VC
+        // tell FollowerListVC the new followers
+        guard user.followers != 0 else {
+            self.presentGFAlertOnMainThread(title: "No followers", message: "팔로워가 없어요!", buttonTitle: "😭")
+            return
+        }
+        delegate.didRequestFollower(for: user.login)
+        dismissVC()
     }
 }

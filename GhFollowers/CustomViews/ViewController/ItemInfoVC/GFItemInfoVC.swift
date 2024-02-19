@@ -14,6 +14,7 @@ class GFItemInfoVC: UIViewController {
     let secondItemInfoView = GFItemInfoView()
     let actionButton = GFButton() // basic button initialized initially. We don't know what colors the content will be YET
     var user: User!
+    weak var delegate: UserInfoVCDelegate!
     
     init(user: User) {
         super.init(nibName: nil, bundle: nil)
@@ -29,6 +30,7 @@ class GFItemInfoVC: UIViewController {
         configureBackgroundView()
         layoutUI()
         configureStackView()
+        configureActionButton()
     }
     
     private func configureBackgroundView() {
@@ -42,6 +44,13 @@ class GFItemInfoVC: UIViewController {
         
         [firstItemInfoView, secondItemInfoView].forEach { stackView.addArrangedSubview($0) }
     }
+    
+    private func configureActionButton() {
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+    }
+    
+    // reason it's a stub - to override the parent class within each corresponding files
+    @objc func actionButtonTapped() { }
     
     private func layoutUI() {
         [stackView, actionButton].forEach{ view.addSubview($0) }

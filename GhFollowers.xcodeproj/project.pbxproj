@@ -93,8 +93,8 @@
 			isa = PBXGroup;
 			children = (
 				BD1E44D82B7F4DA900E4253C /* GFItemInfoVC.swift */,
-				BD1E44DC2B7F508200E4253C /* GFFollowerItemVC.swift */,
 				BD1E44DA2B7F4E3400E4253C /* GFRepoItemVC.swift */,
+				BD1E44DC2B7F508200E4253C /* GFFollowerItemVC.swift */,
 			);
 			path = ItemInfoVC;
 			sourceTree = "<group>";
