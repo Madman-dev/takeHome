@@ -31,6 +31,9 @@ class FollowerListVC: UIViewController {
         configureSearchController()
         getFollowers(username: username, page: page)
         configureDataSource()
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        navigationItem.rightBarButtonItem = addButton
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +53,12 @@ class FollowerListVC: UIViewController {
         collectionView.backgroundColor = .systemBackground
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseId)
         collectionView.delegate = self
+    }
+    
+    @objc func addButtonTapped() {
+        print("더하기가 눌렸습니다.")
+        
+        
     }
     
     func getFollowers(username: String, page: Int) {

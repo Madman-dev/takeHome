@@ -12,4 +12,5 @@ enum GFError: String, Error {
     case unableToComplete = "unable to finish request"
     case invalidResponse = "invalid response from server"
     case invalidData = "Data recieved from server was invalid"
+    case failToPersist = "Unable to Save Data"
 }
