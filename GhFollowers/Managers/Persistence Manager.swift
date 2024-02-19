@@ -7,11 +7,43 @@
 
 import Foundation
 
+enum PersistenceActionType {
+    case add, remove
+}
+
 enum PersistenceManager {
     static private let defaults = UserDefaults.standard
     
     enum keys {
         static let favorites = "favorites"
+    }
+    
+    static func updateWith(follower: Follower, actionType: PersistenceActionType, completed: @escaping (GFError?) -> Void) {
+        retrieveFavorites { result in
+            switch result {
+            case .success(let favorites):
+                var retrievedFavorites = favorites
+                
+                switch actionType {
+                case .add:
+                    guard !retrievedFavorites.contains(follower) else {
+                        completed(.alreadyInFavorites)
+                        return
+                    }
+                    retrievedFavorites.append(follower)
+                
+                // check for duplicate user
+                case .remove:
+                    retrievedFavorites.removeAll { $0.login == follower.login }
+                }
+                
+                // save after removing duplicate
+                completed(save(favorite: favorites)) // saving method already present
+                
+            case .failure(let error):
+                completed(error)
+            }
+        }
     }
     
     // when using Custom Types of an object, it's saved as Data, thus we need to decode the data
@@ -28,6 +60,19 @@ enum PersistenceManager {
             completed(.success(favorites))
         } catch {
             completed(.failure(.failToPersist))
+        }
+    }
+    
+    // as saving data requires encoding data thus GFError
+    static func save(favorite: [Follower]) -> GFError? {
+        do {
+            let encoder = JSONEncoder()
+            let encodedFavorites = try encoder.encode(favorite)
+            
+            defaults.setValue(encodedFavorites, forKey: keys.favorites)
+            return nil // meaning no error
+        } catch {
+            return .failToPersist
         }
     }
 }
