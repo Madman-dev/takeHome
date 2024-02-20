@@ -36,7 +36,6 @@ class GFEmptyStateView: UIView {
         messageLabel.numberOfLines = 3
         messageLabel.textColor = .secondaryLabel
         
-        // change position of labels according to Screen height
         let labelCenterYConstrant: CGFloat = DeviceType.isiPhoneSE || DeviceType.isiPhone8Zoomed ? -80 : -150
         let messageLabelCenterYConstraint = messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: labelCenterYConstrant)
         messageLabelCenterYConstraint.isActive = true
@@ -53,7 +52,6 @@ class GFEmptyStateView: UIView {
         logoImageView.image = Images.emptyState
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        // change position of labels according to Screen height
         let logoImageBottomConstant: CGFloat = DeviceType.isiPhoneSE || DeviceType.isiPhone8Zoomed ? 120 : 40
         let logoImageViewBottomConstraint = logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: logoImageBottomConstant)
         logoImageViewBottomConstraint.isActive = true

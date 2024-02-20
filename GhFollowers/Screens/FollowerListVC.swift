@@ -138,7 +138,6 @@ class FollowerListVC: GFDataLoadingVC {
     func configureSearchController() {
         let searchController = UISearchController()
         searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "뭔가요"
         
         navigationItem.searchController = searchController
@@ -176,19 +175,29 @@ extension FollowerListVC: UICollectionViewDelegate {
     }
 }
 
-extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
+extension FollowerListVC: UISearchResultsUpdating {
     
+    // fixing Error when removing searchbar text one by one
     func updateSearchResults(for searchController: UISearchController) {
-        guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else {
+            /*
+             how is the following code useful? with an empty searchbar state empty?
+             >> guard checks if the searchResult is empty.
+             As we remove the id one by one, it hits the point where the textfield is blank.
+             This is when the following updateData() method is called.
+             In order to keep the data clean, remove all the data as well.
+             
+             + UISearchController already has cancel button activated
+             */
+            filteredFollowers.removeAll()
+            updateData(on: followers)
+            isSearching = false
+            return
+        }
+        
         isSearching = true
         filteredFollowers = followers.filter{ $0.login.lowercased().contains(filter.lowercased()) }
         updateData(on: filteredFollowers)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("취소 버튼이 눌렸습니다.")
-        isSearching = false
-        updateData(on: followers)
     }
 }
 
