@@ -44,7 +44,6 @@ class FavoriteVC: UIViewController {
         tableview.dataSource = self
     }
     
-    // As the method only retrieves Favorited Followers, all I need to do is enable the tableview to set up the data?
     func getFavorites() {
         PersistenceManager.retrieveFavorites { [weak self] result in
             guard let self = self else { return }
@@ -77,7 +76,6 @@ extension FavoriteVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteCell.reuseId) as! FavoriteCell
         let favorite = favorites[indexPath.row]
-        // setting cell with image and name
         cell.set(favorite: favorite)
         return cell
     }
@@ -96,7 +94,6 @@ extension FavoriteVC: UITableViewDelegate, UITableViewDataSource {
         guard editingStyle == .delete else { return }
         
         let favorite = favorites[indexPath.row]
-        // remove from data as well as tableview
         favorites.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .fade)
         

@@ -35,7 +35,6 @@ class SearchVC: UIViewController {
         view.addGestureRecognizer(tap)
     }
     
-    // basic text validation
     @objc func pushFollowerListVC() {
         guard isUsernameEntered else {
             presentGFAlertOnMainThread(title: "유저 이름이 없습니다", message: "이름이 없어요", buttonTitle: "Ok")
@@ -45,6 +44,7 @@ class SearchVC: UIViewController {
         let followListVC = FollowerListVC()
         followListVC.username = usernameTextfield.text
         followListVC.title = usernameTextfield.text
+        usernameTextfield.resignFirstResponder() // remove textfield after pushing
         navigationController?.pushViewController(followListVC, animated: true)
     }
     
@@ -59,7 +59,6 @@ class SearchVC: UIViewController {
         logoImageViewTopConstraint.isActive = true
         
         NSLayoutConstraint.activate([
-            // logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
             logoImageView.widthAnchor.constraint(equalToConstant: 200)
@@ -90,7 +89,6 @@ class SearchVC: UIViewController {
         ])
     }
 }
-
 
 extension SearchVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

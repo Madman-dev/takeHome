@@ -10,7 +10,6 @@ import UIKit
 class GFUserInfoHeaderVC: UIViewController {
     // Later try placing the components within a StackView for dynamic
     
-    // basic UI components needed within the VC
     let avatarImageView = GFAvatarImageView(frame: .zero)
     let usernameLabel = GFTitleLabel(textAlignment: .left, fontSize: 34)
     let nameLabel = GFSecondaryTitleLabel(size: 18)
@@ -26,7 +25,6 @@ class GFUserInfoHeaderVC: UIViewController {
         configureUI()
     }
     
-    // when initializing GFHeaderInfoVC, we place in the user and create it.
     init(user: User) {
         super.init(nibName: nil, bundle: nil)
         self.user = user

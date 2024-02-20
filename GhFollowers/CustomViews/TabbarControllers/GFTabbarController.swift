@@ -11,7 +11,6 @@ class GFTabbarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // basic UIComposition + Hierarchy refactored
         configureTabbar()
     }
     
@@ -19,7 +18,6 @@ class GFTabbarController: UITabBarController {
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers = [createSearchNC(), createFavoritesNC()]
         
-        // enable tabbar dividing line
         let appearance = UITabBarAppearance()
         appearance.backgroundColor = .systemBackground
         tabBar.standardAppearance = appearance

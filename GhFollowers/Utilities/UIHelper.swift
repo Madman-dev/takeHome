@@ -9,7 +9,6 @@ import UIKit
 
 struct UIHelper {
     
-    // THE VC doesn't HAVE to know about the flowlayout. > Does it have to know? > Move to UIHelper
     static func createThreeColumnFlowlayout(in view: UIView) -> UICollectionViewFlowLayout {
         let width = view.bounds.width
         let padding: CGFloat = 12

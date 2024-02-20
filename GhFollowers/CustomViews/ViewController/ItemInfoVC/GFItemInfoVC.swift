@@ -41,7 +41,6 @@ class GFItemInfoVC: UIViewController {
     private func configureStackView() {
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
-        
         [firstItemInfoView, secondItemInfoView].forEach { stackView.addArrangedSubview($0) }
     }
     
@@ -49,7 +48,6 @@ class GFItemInfoVC: UIViewController {
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
     }
     
-    // reason it's a stub - to override the parent class within each corresponding files
     @objc func actionButtonTapped() { }
     
     private func layoutUI() {

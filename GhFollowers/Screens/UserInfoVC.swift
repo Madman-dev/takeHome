@@ -44,7 +44,6 @@ class UserInfoVC: UIViewController {
             switch result {
             case .success(let user):
                 
-                // simple to understand code
                 DispatchQueue.main.async { self.configureUIElementsWithUser(user: user) }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -62,7 +61,6 @@ class UserInfoVC: UIViewController {
         self.add(childVC: repoItemVC, to: self.itemViewOne)
         self.add(childVC: followerItemVC, to: self.itemViewTwo)
         
-        // self.dateLabel.text = user.createdAt // 사용자 github profile이 생성된 일정
         self.dateLabel.text = "Using Github since, \(user.createdAt.convertToDisplayFormat())"
     }
     

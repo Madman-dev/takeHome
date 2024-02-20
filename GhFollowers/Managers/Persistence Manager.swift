@@ -39,7 +39,7 @@ enum PersistenceManager {
                 }
                 
                 // save after removing duplicate
-                completed(save(favorite: retrievedFavorites)) // saving method already present
+                completed(save(favorite: retrievedFavorites))
                 
             case .failure(let error):
                 completed(error)
@@ -47,7 +47,6 @@ enum PersistenceManager {
         }
     }
     
-    // when using Custom Types of an object, it's saved as Data, thus we need to decode the data
     static func retrieveFavorites(completed: @escaping (Result<[Follower], GFError>) -> Void) {
         guard let favoritesData = defaults.object(forKey: keys.favorites) as? Data else {
             // a blank Array, not an error since first time to enter in data
@@ -64,14 +63,13 @@ enum PersistenceManager {
         }
     }
     
-    // as saving data requires encoding data thus GFError
     static func save(favorite: [Follower]) -> GFError? {
         do {
             let encoder = JSONEncoder()
             let encodedFavorites = try encoder.encode(favorite)
             
             defaults.setValue(encodedFavorites, forKey: keys.favorites)
-            return nil // meaning no error
+            return nil
         } catch {
             return .failToPersist
         }

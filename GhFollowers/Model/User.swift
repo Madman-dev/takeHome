@@ -7,7 +7,6 @@
 
 import Foundation
 
-// out app is only able to pull down the data on the web
 struct User: Codable {
     let login: String
     let avatarUrl: String

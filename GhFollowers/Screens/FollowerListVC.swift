@@ -159,7 +159,6 @@ extension FollowerListVC: UICollectionViewDelegate {
         
         let destinationVC = UserInfoVC()
         
-        // FollowerListVCDelegate 채택
         destinationVC.delegate = self
         destinationVC.username = follower.login
         let navVC = UINavigationController(rootViewController: destinationVC)
@@ -185,7 +184,7 @@ extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
 
 extension FollowerListVC: FollowerListVCDelegate {
     func didRequestFollower(for username: String) {
-        self.username = username // > 필요 없음 >> data persistence를 위해 필요한 데이터, 없을 경우 내 계정만 계속 가리키게 된다.
+        self.username = username
         title = username
         page = 1
         
