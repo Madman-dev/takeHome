@@ -42,7 +42,7 @@ class GFUserInfoHeaderVC: UIViewController {
         bioLabel.text           = user.bio ?? "자기소개가 비어있습니다."
         bioLabel.numberOfLines  = 3
         
-        locationImageView.image = UIImage(systemName: SFSymbols.location)
+        locationImageView.image = SFSymbols.location
         locationImageView.tintColor = .secondaryLabel
     }
     
