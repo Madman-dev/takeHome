@@ -27,18 +27,19 @@ enum PersistenceManager {
                 switch actionType {
                 case .add:
                     guard !retrievedFavorites.contains(follower) else {
+                        // 중복 확인
                         completed(.alreadyInFavorites)
                         return
                     }
                     retrievedFavorites.append(follower)
                 
-                // check for duplicate user
+                // remove duplicate users
                 case .remove:
                     retrievedFavorites.removeAll { $0.login == follower.login }
                 }
                 
                 // save after removing duplicate
-                completed(save(favorite: favorites)) // saving method already present
+                completed(save(favorite: retrievedFavorites)) // saving method already present
                 
             case .failure(let error):
                 completed(error)

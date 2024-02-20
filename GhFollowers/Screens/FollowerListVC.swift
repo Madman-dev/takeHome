@@ -56,13 +56,35 @@ class FollowerListVC: UIViewController {
     }
     
     @objc func addButtonTapped() {
-        print("더하기가 눌렸습니다.")
+        showLoadingView() // due to network call
         
+        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+            guard let self = self else { return }
+            self.dismissLoadingView()
+            
+            switch result {
+            case .success(let user):
+                let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+                
+                PersistenceManager.updateWith(follower: favorite, actionType: .add) { [weak self] error in
+                    guard let self = self else { return }
+                    guard let error = error else {
+                        self.presentGFAlertOnMainThread(title: "성공!", message: "저장되었습니다.", buttonTitle: "Ok")
+                        return
+                    }
+                    
+                    // 에러 있을 경우
+                    self.presentGFAlertOnMainThread(title: "뭔가 잘못됐어요", message: error.rawValue, buttonTitle: "Ok")
+                }
+                
+            case .failure(let error):
+                self.presentGFAlertOnMainThread(title: "뭔가 잘못됐습니다.", message: error.rawValue, buttonTitle: "OK")
+            }
+        }
         
     }
     
     func getFollowers(username: String, page: Int) {
-        // animate loading Screen
         showLoadingView()
         
         NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
@@ -109,7 +131,6 @@ class FollowerListVC: UIViewController {
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "뭔가요"
         
-//        searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
     }
 }
@@ -133,7 +154,6 @@ extension FollowerListVC: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // need to display using followers of specific array depending on which Array its listening to.
         let activeArray = isSearching ? filteredFollowers : followers
         let follower = activeArray[indexPath.item]
         
@@ -165,19 +185,13 @@ extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
 
 extension FollowerListVC: FollowerListVCDelegate {
     func didRequestFollower(for username: String) {
-        //get followers of username
-        // self.username = username > 필요 없음
+        self.username = username // > 필요 없음 >> data persistence를 위해 필요한 데이터, 없을 경우 내 계정만 계속 가리키게 된다.
         title = username
         page = 1
         
-        // 화면 reset
         followers.removeAll()
         filteredFollowers.removeAll()
-        
-        // scroll the collectionview to the top > 현재는 barItem이 존재하기 때문에 조금 내려 앉도록 수정
         collectionView.setContentOffset(CGPoint(x: 0, y: -150), animated: true)
-        
-        // updating the networkcall again
         getFollowers(username: username, page: page)
     }
 }
