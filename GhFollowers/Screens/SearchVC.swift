@@ -14,6 +14,8 @@ class SearchVC: UIViewController {
     let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers") // 버튼의 이름이 변경되면 다시 변경해야하는 이슈가 발생 therefore Generic Type으로 이름을 작성하는 방법도 좋을 듯하다
     var isUsernameEntered: Bool { return !usernameTextfield.text!.isEmpty }
     
+    var logoImageViewTopConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -51,8 +53,13 @@ class SearchVC: UIViewController {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.image = UIImage(named: "gh-logo")
         
+        let topConstraintConstant: CGFloat = DeviceType.isiPhoneSE || DeviceType.isiPhone8Zoomed ? 20 : 80
+        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                                                        constant: topConstraintConstant)
+        logoImageViewTopConstraint.isActive = true
+        
         NSLayoutConstraint.activate([
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
+            // logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
             logoImageView.widthAnchor.constraint(equalToConstant: 200)
