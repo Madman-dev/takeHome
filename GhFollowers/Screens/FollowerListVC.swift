@@ -23,6 +23,7 @@ class FollowerListVC: GFDataLoadingVC {
     var page: Int = 1
     var hasMoreFollowers: Bool = true
     var isSearching: Bool = false
+    var isLoadingFollowers: Bool = false
     
     init(username: String) {
         super.init(nibName: nil, bundle: nil)
@@ -96,6 +97,8 @@ class FollowerListVC: GFDataLoadingVC {
     
     func getFollowers(username: String, page: Int) {
         showLoadingView()
+        // Loading 확인
+        isLoadingFollowers = true
         
         NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
             #warning("Dismiss the LoadingView")
@@ -116,6 +119,7 @@ class FollowerListVC: GFDataLoadingVC {
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "오류", message: error.rawValue, buttonTitle: "OK")
             }
+            self.isLoadingFollowers = false
         }
     }
     
@@ -156,7 +160,8 @@ extension FollowerListVC: UICollectionViewDelegate {
         print(height)
         
         if offsetY > contentHeight - height {
-            guard hasMoreFollowers else { return }
+            // fix in slow connection > users continually requesting for data before the first networkcall is finished or returned
+            guard hasMoreFollowers, !isLoadingFollowers else { return }
             page += 1
             getFollowers(username: username, page: page)
         }
@@ -209,7 +214,8 @@ extension FollowerListVC: FollowerListVCDelegate {
         
         followers.removeAll()
         filteredFollowers.removeAll()
-        collectionView.setContentOffset(CGPoint(x: 0, y: -150), animated: true)
+        // scrolling screen to the top without giving boilerplate code
+        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         getFollowers(username: username, page: page)
     }
 }
