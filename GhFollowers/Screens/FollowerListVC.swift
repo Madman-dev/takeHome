@@ -155,10 +155,6 @@ extension FollowerListVC: UICollectionViewDelegate {
         let contentHeight   = scrollView.contentSize.height
         let height          = scrollView.frame.size.height
         
-        print(offsetY)
-        print(contentHeight)
-        print(height)
-        
         if offsetY > contentHeight - height {
             // fix in slow connection > users continually requesting for data before the first networkcall is finished or returned
             guard hasMoreFollowers, !isLoadingFollowers else { return }

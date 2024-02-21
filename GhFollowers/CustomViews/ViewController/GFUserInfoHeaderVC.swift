@@ -20,7 +20,7 @@ class GFUserInfoHeaderVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubview()
+        addSubviews()
         layoutUI()
         configureUI()
     }
@@ -53,8 +53,8 @@ class GFUserInfoHeaderVC: UIViewController {
         }
     }
     
-    func addSubview() {
-        [avatarImageView, usernameLabel, nameLabel, locationLabel, locationImageView, bioLabel].forEach{ view.addSubview($0) }
+    func addSubviews() {
+        view.addSubviews(avatarImageView, usernameLabel, nameLabel, locationLabel, locationImageView, bioLabel)
     }
     
     func layoutUI() {
