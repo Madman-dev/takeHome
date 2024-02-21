@@ -9,12 +9,11 @@ import UIKit
 
 class GFItemInfoVC: UIViewController {
 
-    let stackView = UIStackView()
-    let firstItemInfoView = GFItemInfoView()
-    let secondItemInfoView = GFItemInfoView()
-    let actionButton = GFButton() // basic button initialized initially. We don't know what colors the content will be YET
+    let stackView           = UIStackView()
+    let firstItemInfoView   = GFItemInfoView()
+    let secondItemInfoView  = GFItemInfoView()
+    let actionButton        = GFButton()
     var user: User!
-    // need to listen to the response.
     
     init(user: User) {
         super.init(nibName: nil, bundle: nil)
@@ -28,20 +27,21 @@ class GFItemInfoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackgroundView()
+        configureActionButton()
         layoutUI()
         configureStackView()
-        configureActionButton()
     }
     
     private func configureBackgroundView() {
         view.layer.cornerRadius = 18
-        view.backgroundColor = .secondarySystemBackground
+        view.backgroundColor    = .secondarySystemBackground
     }
     
     private func configureStackView() {
-        stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
-        [firstItemInfoView, secondItemInfoView].forEach { stackView.addArrangedSubview($0) }
+        stackView.axis          = .horizontal
+        stackView.distribution  = .equalSpacing
+        stackView.addArrangedSubview(firstItemInfoView)
+        stackView.addArrangedSubview(secondItemInfoView)
     }
     
     private func configureActionButton() {
@@ -52,6 +52,8 @@ class GFItemInfoVC: UIViewController {
     
     private func layoutUI() {
         view.addSubviews(stackView, actionButton)
+        
+        // couldn't we allow TAMIC disabled in addsubViews in total?
         stackView.translatesAutoresizingMaskIntoConstraints = false
         let padding: CGFloat = 20
         

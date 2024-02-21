@@ -9,17 +9,16 @@ import UIKit
 
 class SearchVC: UIViewController {
 
-    let logoImageView = UIImageView()
-    let usernameTextfield = GFTextfield()
-    let callToActionButton = GFButton(backgroundColor: .systemGreen, title: "Get Followers") // 버튼의 이름이 변경되면 다시 변경해야하는 이슈가 발생 therefore Generic Type으로 이름을 작성하는 방법도 좋을 듯하다
+    let logoImageView       = UIImageView()
+    let usernameTextfield   = GFTextfield()
+    let callToActionButton  = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
     var isUsernameEntered: Bool { return !usernameTextfield.text!.isEmpty }
-    
-    var logoImageViewTopConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         view.addSubviews(logoImageView, usernameTextfield, callToActionButton)
+        
         configureLogoImageView()
         configureTextfield()
         configureCallToActionButton()
@@ -44,7 +43,7 @@ class SearchVC: UIViewController {
         }
         
         let followListVC = FollowerListVC(username: usernameTextfield.text!)
-        usernameTextfield.resignFirstResponder() // remove textfield after pushing
+        usernameTextfield.resignFirstResponder()
         navigationController?.pushViewController(followListVC, animated: true)
     }
     
@@ -53,11 +52,9 @@ class SearchVC: UIViewController {
         logoImageView.image = Images.ghLogo
         
         let topConstraintConstant: CGFloat = DeviceType.isiPhoneSE || DeviceType.isiPhone8Zoomed ? 20 : 80
-        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                                                        constant: topConstraintConstant)
-        logoImageViewTopConstraint.isActive = true
         
         NSLayoutConstraint.activate([
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
             logoImageView.widthAnchor.constraint(equalToConstant: 200)

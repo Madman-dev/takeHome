@@ -8,19 +8,20 @@
 import UIKit
 
 class GFUserInfoHeaderVC: UIViewController {
-    // Later try placing the components within a StackView for dynamic
     
-    let avatarImageView = GFAvatarImageView(frame: .zero)
-    let usernameLabel = GFTitleLabel(textAlignment: .left, fontSize: 34)
-    let nameLabel = GFSecondaryTitleLabel(size: 18)
-    let locationLabel = GFSecondaryTitleLabel(size: 18)
-    let locationImageView = UIImageView()
-    let bioLabel = GFBodyLabel(textAlignment: .left)
+    // Later try placing the components within a StackView for dynamic
+    let avatarImageView     = GFAvatarImageView(frame: .zero)
+    let usernameLabel       = GFTitleLabel(textAlignment: .left, fontSize: 34)
+    let nameLabel           = GFSecondaryTitleLabel(size: 18)
+    let locationLabel       = GFSecondaryTitleLabel(size: 18)
+    let locationImageView   = UIImageView()
+    let bioLabel            = GFBodyLabel(textAlignment: .left)
+    
     var user: User!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubviews()
+        view.addSubviews(avatarImageView, usernameLabel, nameLabel, locationLabel, locationImageView, bioLabel)
         layoutUI()
         configureUI()
     }
@@ -34,35 +35,24 @@ class GFUserInfoHeaderVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureUI() {
-        downloadAvatarImage()
-        usernameLabel.text      = user.login
-        nameLabel.text          = user.name ?? "N/A"
-        locationLabel.text      = user.location ?? "지역 정보가 없습니다."
-        bioLabel.text           = user.bio ?? "자기소개가 비어있습니다."
-        bioLabel.numberOfLines  = 3
+    private func configureUI() {
+        avatarImageView.downloadImage(fromURL: user.avatarUrl)
+        usernameLabel.text          = user.login
+        nameLabel.text              = user.name ?? "N/A"
+        locationLabel.text          = user.location ?? "지역 정보가 없습니다."
+        bioLabel.text               = user.bio ?? "자기소개가 비어있습니다."
+        bioLabel.numberOfLines      = 3
         
-        locationImageView.image = SFSymbols.location
+        locationImageView.image     = SFSymbols.location
         locationImageView.tintColor = .secondaryLabel
     }
     
-    func downloadAvatarImage() {
-        NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] image in
-            guard let self = self else { return }
-            DispatchQueue.main.async { self.avatarImageView.image = image }
-        }
-    }
-    
-    func addSubviews() {
-        view.addSubviews(avatarImageView, usernameLabel, nameLabel, locationLabel, locationImageView, bioLabel)
-    }
-    
-    func layoutUI() {
-        let padding: CGFloat = 20
-        let textImagePadding: CGFloat = 12
+    private func layoutUI() {
+        let padding: CGFloat            = 20
+        let textImagePadding: CGFloat   = 12
         
         locationImageView.translatesAutoresizingMaskIntoConstraints = false
-        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        avatarImageView.translatesAutoresizingMaskIntoConstraints   = false
         
         NSLayoutConstraint.activate([
             avatarImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: padding),

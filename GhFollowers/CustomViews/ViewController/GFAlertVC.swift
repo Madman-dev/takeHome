@@ -9,21 +9,22 @@ import UIKit
 
 class GFAlertVC: UIViewController {
     
-    let containerView = GFAlertContainerView()
-    let titleLabel = GFTitleLabel(textAlignment: .center, fontSize: 20)
-    let messageLabel = GFBodyLabel(textAlignment: .center)
-    let actionButton = GFButton(backgroundColor: .systemPink, title: "OK!")
+    let containerView   = GFAlertContainerView()
+    let titleLabel      = GFTitleLabel(textAlignment: .center, fontSize: 20)
+    let messageLabel    = GFBodyLabel(textAlignment: .center)
+    let actionButton    = GFButton(backgroundColor: .systemPink, title: "OK!")
     
     var alertTitle: String?
     var alertMessage: String?
     var buttonTitle: String?
+    
     let padding: CGFloat = 20
 
     init(title: String, message: String, buttonTitle: String) {
         super.init(nibName: nil, bundle: nil)
-        self.alertTitle = title
-        self.alertMessage = message
-        self.buttonTitle = buttonTitle
+        self.alertTitle     = title
+        self.alertMessage   = message
+        self.buttonTitle    = buttonTitle
     }
     
     required init?(coder: NSCoder) {
@@ -34,13 +35,14 @@ class GFAlertVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
         view.addSubviews(containerView, titleLabel, messageLabel, actionButton)
+        
         configureContainerView()
         configureTitleLabel()
         configureActionButton()
         configureMessageLabel()
     }
         
-    func configureContainerView() {
+    private func configureContainerView() {
         NSLayoutConstraint.activate([
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -49,7 +51,7 @@ class GFAlertVC: UIViewController {
         ])
     }
     
-    func configureTitleLabel() {
+    private func configureTitleLabel() {
         titleLabel.text = alertTitle ?? "값이 없습니다"
         
         NSLayoutConstraint.activate([
@@ -60,7 +62,7 @@ class GFAlertVC: UIViewController {
         ])
     }
     
-    func configureActionButton() {
+    private func configureActionButton() {
         actionButton.setTitle(buttonTitle ?? "오류!", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         
@@ -72,7 +74,7 @@ class GFAlertVC: UIViewController {
         ])
     }
     
-    func configureMessageLabel() {
+    private func configureMessageLabel() {
         messageLabel.text = alertMessage ?? "Unable to complete Request"
         messageLabel.numberOfLines = 4
         

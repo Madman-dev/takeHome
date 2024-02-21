@@ -35,7 +35,6 @@ class GFFollowerItemVC: GFItemInfoVC {
         actionButton.set(backgroundColor: .purple, title: "Get Followers")
     }
     
-    // makes the request to the Superview
     override func actionButtonTapped() {
         delegate.didTapGetFollowers(for: user)
     }

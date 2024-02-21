@@ -13,27 +13,22 @@ enum PersistenceActionType {
 
 enum PersistenceManager {
     static private let defaults = UserDefaults.standard
-    
-    enum keys {
-        static let favorites = "favorites"
-    }
+    enum keys { static let favorites = "favorites" }
     
     static func updateWith(follower: Follower, actionType: PersistenceActionType, completed: @escaping (GFError?) -> Void) {
         retrieveFavorites { result in
             switch result {
-            // mutable Array of favorites
             case .success(var favorites):
                 
                 switch actionType {
                 case .add:
                     guard !favorites.contains(follower) else {
-                        // 중복 확인
                         completed(.alreadyInFavorites)
                         return
                     }
                     favorites.append(follower)
-                
-                // remove duplicate users
+                    
+                    // remove duplicate users
                 case .remove:
                     favorites.removeAll { $0.login == follower.login }
                 }
@@ -49,7 +44,6 @@ enum PersistenceManager {
     
     static func retrieveFavorites(completed: @escaping (Result<[Follower], GFError>) -> Void) {
         guard let favoritesData = defaults.object(forKey: keys.favorites) as? Data else {
-            // a blank Array, not an error since first time to enter in data
             completed(.success([]))
             return
         }

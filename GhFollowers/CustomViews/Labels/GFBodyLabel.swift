@@ -23,13 +23,12 @@ class GFBodyLabel: UILabel {
     }
     
     private func configure() {
-        textColor = .secondaryLabel
-        font = UIFont.preferredFont(forTextStyle: .body)
-        // enable dynamic font
-        adjustsFontForContentSizeCategory = true
-        adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.75
-        lineBreakMode = .byWordWrapping
+        textColor                           = .secondaryLabel
+        font                                = UIFont.preferredFont(forTextStyle: .body)
+        adjustsFontForContentSizeCategory   = true // enable dynamic font
+        adjustsFontSizeToFitWidth           = true
+        minimumScaleFactor                  = 0.75
+        lineBreakMode                       = .byWordWrapping
         translatesAutoresizingMaskIntoConstraints = false
         // label.numberOfLines = 0를 하지 않는 이유는 한 형식으로 고정을 하기 때문 - You never know what will happen
     }

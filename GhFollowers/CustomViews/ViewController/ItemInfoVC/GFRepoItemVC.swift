@@ -36,7 +36,6 @@ class GFRepoItemVC: GFItemInfoVC {
         actionButton.set(backgroundColor: .blue, title: "Github Profile")
     }
     
-    // makes the request to the Superview
     override func actionButtonTapped() {
         delegate.didTapGitHubProfile(for: user)
     }

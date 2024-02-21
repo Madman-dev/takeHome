@@ -7,21 +7,18 @@
 
 import UIKit
 
-// Protocol moved from FollowerListVC as UserInfoVC is the VC that needs to request to FollowerListVC search certain followers.
 protocol UserInfoVCDelegate: AnyObject {
     func didRequestFollower(for username: String)
 }
 
 class UserInfoVC: GFDataLoadingVC {
     
-    // considering iPhoneSE user's inability to see the entire screen
-    let scrollview = UIScrollView()
+    let scrollview  = UIScrollView()
     let contentView = UIView()
-    
-    let headerView = UIView()
+    let headerView  = UIView()
     let itemViewOne = UIView()
     let itemViewTwo = UIView()
-    let dateLabel = GFBodyLabel(textAlignment: .center)
+    let dateLabel   = GFBodyLabel(textAlignment: .center)
     var itemViews: [UIView] = []
     weak var delegate: UserInfoVCDelegate!
     
@@ -35,27 +32,27 @@ class UserInfoVC: GFDataLoadingVC {
         getUserInfo()
     }
     
-    func configureViewController() {
-        view.backgroundColor = .systemBackground
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
-        navigationItem.rightBarButtonItem = doneButton
+    private func configureViewController() {
+        view.backgroundColor                = .systemBackground
+        let doneButton                      = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        navigationItem.rightBarButtonItem   = doneButton
     }
     
-    func getUserInfo() {
+    private func getUserInfo() {
         NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let user):
-                
                 DispatchQueue.main.async { self.configureUIElementsWithUser(user: user) }
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
     
-    func configureUIElementsWithUser(user: User) {
+    private func configureUIElementsWithUser(user: User) {
         self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
         self.add(childVC: GFRepoItemVC(user: user, delegate: self), to: self.itemViewOne)
         self.add(childVC: GFFollowerItemVC(user: user, delegate: self), to: self.itemViewTwo)
@@ -63,7 +60,7 @@ class UserInfoVC: GFDataLoadingVC {
         self.dateLabel.text = "Using Github since, \(user.createdAt.convertToMonthYearFormat())"
     }
     
-    func configureScrollView() {
+    private func configureScrollView() {
         view.addSubviews(scrollview)
         scrollview.addSubview(contentView)
         scrollview.pinToEdges(superview: view)
@@ -71,12 +68,11 @@ class UserInfoVC: GFDataLoadingVC {
         
         NSLayoutConstraint.activate([
             contentView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
-            // contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor) > trying to give dynamic height won't work as the viewController is currently 1. modally presented, 2. already fixed to the view's bottomAnchor.
             contentView.heightAnchor.constraint(equalToConstant: 600)
         ])
     }
     
-    func layoutUI() {
+    private func layoutUI() {
         let padding: CGFloat = 20
         let itemHeight: CGFloat = 140
         
@@ -107,7 +103,7 @@ class UserInfoVC: GFDataLoadingVC {
         ])
     }
     
-    func add(childVC: UIViewController, to containerView: UIView) {
+    private func add(childVC: UIViewController, to containerView: UIView) {
         addChild(childVC)
         containerView.addSubview(childVC.view)
         
@@ -136,7 +132,6 @@ extension UserInfoVC: GFFollowerItemVCDelegate {
             self.presentGFAlertOnMainThread(title: "No followers", message: "팔로워가 없어요!", buttonTitle: "😭")
             return
         }
-        // UserInfoVC only got the 'tap' signal, needs to complete the request by sending another request to the destination(FollowerListVC)
         delegate.didRequestFollower(for: user.login)
         dismissVC()
     }
