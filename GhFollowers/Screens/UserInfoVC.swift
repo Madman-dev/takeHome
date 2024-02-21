@@ -14,6 +14,10 @@ protocol UserInfoVCDelegate: AnyObject {
 
 class UserInfoVC: GFDataLoadingVC {
     
+    // considering iPhoneSE user's inability to see the entire screen
+    let scrollview = UIScrollView()
+    let contentView = UIView()
+    
     let headerView = UIView()
     let itemViewOne = UIView()
     let itemViewTwo = UIView()
@@ -26,7 +30,7 @@ class UserInfoVC: GFDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
-        
+        configureScrollView()
         layoutUI()
         getUserInfo()
     }
@@ -59,6 +63,19 @@ class UserInfoVC: GFDataLoadingVC {
         self.dateLabel.text = "Using Github since, \(user.createdAt.convertToMonthYearFormat())"
     }
     
+    func configureScrollView() {
+        view.addSubviews(scrollview)
+        scrollview.addSubview(contentView)
+        scrollview.pinToEdges(superview: view)
+        contentView.pinToEdges(superview: scrollview)
+        
+        NSLayoutConstraint.activate([
+            contentView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
+            // contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor) > trying to give dynamic height won't work as the viewController is currently 1. modally presented, 2. already fixed to the view's bottomAnchor.
+            contentView.heightAnchor.constraint(equalToConstant: 600)
+        ])
+    }
+    
     func layoutUI() {
         let padding: CGFloat = 20
         let itemHeight: CGFloat = 140
@@ -66,17 +83,17 @@ class UserInfoVC: GFDataLoadingVC {
         itemViews = [headerView, itemViewOne, itemViewTwo, dateLabel]
         
         for itemView in itemViews {
-            view.addSubview(itemView)
+            contentView.addSubview(itemView)
             itemView.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
-                itemView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-                itemView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding)
+                itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+                itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding)
             ])
         }
         
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
