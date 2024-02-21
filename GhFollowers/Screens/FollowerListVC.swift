@@ -107,6 +107,8 @@ class FollowerListVC: GFDataLoadingVC {
                 self.followers.append(contentsOf: newFollowers)
                 
                 if self.followers.isEmpty {
+                    // remove search bar if followers are 0
+                    self.navigationItem.searchController = nil
                     let message = "해당 유저는 아직 팔로워가 없네요? 팔로우하는건 어떤가요?"
                     DispatchQueue.main.async { self.showEmptyStateView(with: message, in: self.view) }
                     return
@@ -207,8 +209,12 @@ extension FollowerListVC: UserInfoVCDelegate {
         
         followers.removeAll()
         filteredFollowers.removeAll()
+        // when tapping get followers without scrolling, the title on VC blocks the avatar image
+//        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        
         // scrolling screen to the top without giving boilerplate code
-        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        collectionView.scrollToItem(at: IndexPath(row: -1, section: 0), at: .top, animated: true)
+//        collectionView.scrollToItem(at: IndexPath(row: -1, section: 0), at: .init(rawValue: 0), animated: true)
         getFollowers(username: username, page: page)
     }
 }
