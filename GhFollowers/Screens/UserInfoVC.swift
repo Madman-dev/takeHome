@@ -52,14 +52,9 @@ class UserInfoVC: GFDataLoadingVC {
     }
     
     func configureUIElementsWithUser(user: User) {
-        let repoItemVC = GFRepoItemVC(user: user)
-        let followerItemVC = GFFollowerItemVC(user: user)
-        repoItemVC.delegate = self
-        followerItemVC.delegate = self
-        
         self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
-        self.add(childVC: repoItemVC, to: self.itemViewOne)
-        self.add(childVC: followerItemVC, to: self.itemViewTwo)
+        self.add(childVC: GFRepoItemVC(user: user, delegate: self), to: self.itemViewOne)
+        self.add(childVC: GFFollowerItemVC(user: user, delegate: self), to: self.itemViewTwo)
         
         self.dateLabel.text = "Using Github since, \(user.createdAt.convertToMonthYearFormat())"
     }
@@ -108,9 +103,7 @@ class UserInfoVC: GFDataLoadingVC {
     }
 }
 
-// UserInfoVC listens to the 2 itemVCs and act correspondingly
-extension UserInfoVC: ItemInfoVCDelegate {
-    // no need to create delegate as user completes the request by presenting SafariVC
+extension UserInfoVC: GFRepoItemVCDelegate {
     func didTapGitHubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else {
             presentGFAlertOnMainThread(title: "URL 오류", message: "URL이 없습니다.", buttonTitle: "Ok")
@@ -118,7 +111,9 @@ extension UserInfoVC: ItemInfoVCDelegate {
         }
         presentSafariVC(with: url)
     }
-    
+}
+
+extension UserInfoVC: GFFollowerItemVCDelegate {
     func didTapGetFollowers(for user: User) {
         guard user.followers != 0 else {
             self.presentGFAlertOnMainThread(title: "No followers", message: "팔로워가 없어요!", buttonTitle: "😭")
