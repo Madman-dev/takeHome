@@ -7,6 +7,12 @@
 
 import UIKit
 
+// moved to ItemInfoVC, as the Superview (ItemInfoVC) is responsible for sending out the message
+protocol ItemInfoVCDelegate: AnyObject {
+    func didTapGitHubProfile(for user: User)
+    func didTapGetFollowers(for user: User)
+}
+
 class GFItemInfoVC: UIViewController {
 
     let stackView = UIStackView()
@@ -14,7 +20,8 @@ class GFItemInfoVC: UIViewController {
     let secondItemInfoView = GFItemInfoView()
     let actionButton = GFButton() // basic button initialized initially. We don't know what colors the content will be YET
     var user: User!
-    weak var delegate: UserInfoVCDelegate!
+    // need to listen to the response.
+    weak var delegate: ItemInfoVCDelegate!
     
     init(user: User) {
         super.init(nibName: nil, bundle: nil)

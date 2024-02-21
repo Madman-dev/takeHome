@@ -17,9 +17,10 @@ class GFRepoItemVC: GFItemInfoVC {
     private func configureItems() {
         firstItemInfoView.set(itemType: .repos, withCount: user.publicRepos)
         secondItemInfoView.set(itemType: .gist, withCount: user.publicGists)
-        actionButton.set(backgroundColor: .green, title: "Github Profile")
+        actionButton.set(backgroundColor: .blue, title: "Github Profile")
     }
     
+    // makes the request to the Superview
     override func actionButtonTapped() {
         delegate.didTapGitHubProfile(for: user)
     }

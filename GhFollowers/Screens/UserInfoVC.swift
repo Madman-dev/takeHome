@@ -7,9 +7,9 @@
 
 import UIKit
 
+// Protocol moved from FollowerListVC as UserInfoVC is the VC that needs to request to FollowerListVC search certain followers.
 protocol UserInfoVCDelegate: AnyObject {
-    func didTapGitHubProfile(for user: User)
-    func didTapGetFollowers(for user: User)
+    func didRequestFollower(for username: String)
 }
 
 class UserInfoVC: GFDataLoadingVC {
@@ -19,7 +19,7 @@ class UserInfoVC: GFDataLoadingVC {
     let itemViewTwo = UIView()
     let dateLabel = GFBodyLabel(textAlignment: .center)
     var itemViews: [UIView] = []
-    weak var delegate: FollowerListVCDelegate!
+    weak var delegate: UserInfoVCDelegate!
     
     var username: String!
 
@@ -82,7 +82,6 @@ class UserInfoVC: GFDataLoadingVC {
         
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            // create headerview higher
             headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
@@ -92,7 +91,6 @@ class UserInfoVC: GFDataLoadingVC {
             itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
             
             dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
-            // font size
             dateLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
@@ -110,23 +108,23 @@ class UserInfoVC: GFDataLoadingVC {
     }
 }
 
-extension UserInfoVC: UserInfoVCDelegate {
+// UserInfoVC listens to the 2 itemVCs and act correspondingly
+extension UserInfoVC: ItemInfoVCDelegate {
+    // no need to create delegate as user completes the request by presenting SafariVC
     func didTapGitHubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else {
             presentGFAlertOnMainThread(title: "URL 오류", message: "URL이 없습니다.", buttonTitle: "Ok")
             return
         }
-        // show safari controller
         presentSafariVC(with: url)
     }
     
     func didTapGetFollowers(for user: User) {
-        // dismiss VC
-        // tell FollowerListVC the new followers
         guard user.followers != 0 else {
             self.presentGFAlertOnMainThread(title: "No followers", message: "팔로워가 없어요!", buttonTitle: "😭")
             return
         }
+        // UserInfoVC only got the 'tap' signal, needs to complete the request by sending another request to the destination(FollowerListVC)
         delegate.didRequestFollower(for: user.login)
         dismissVC()
     }
