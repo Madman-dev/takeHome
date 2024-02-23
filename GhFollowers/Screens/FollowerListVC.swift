@@ -17,7 +17,7 @@ class FollowerListVC: GFDataLoadingVC {
     var page: Int                       = 1
     var hasMoreFollowers: Bool          = true
     var isSearching: Bool               = false
-    var isLoadingFollowers: Bool        = false
+    var isLoadingMoreFollowers: Bool        = false
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
     
@@ -34,6 +34,22 @@ class FollowerListVC: GFDataLoadingVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if followers.isEmpty && !isLoadingMoreFollowers {
+            var config = UIContentUnavailableConfiguration.empty()
+            config.image = .init(systemName: "person")
+            config.text = "팔로워가 없습니다."
+            config.secondaryText = "😭"
+            contentUnavailableConfiguration = config
+        } else if isSearching && filteredFollowers.isEmpty {
+            // searchbar에서 겁색할 경우
+            contentUnavailableConfiguration = UIContentUnavailableConfiguration.search()
+            
+        } else {
+            contentUnavailableConfiguration = nil
+        }
     }
     
     override func viewDidLoad() {
@@ -75,7 +91,7 @@ class FollowerListVC: GFDataLoadingVC {
     
     private func getFollowers(username: String, page: Int) { // Following code 'async' call in a function that does not support concurrency
         showLoadingView()
-        isLoadingFollowers = true
+        isLoadingMoreFollowers = true
         
         // MARK: - Initial Completion Handler implemented method
         //        NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
@@ -90,7 +106,7 @@ class FollowerListVC: GFDataLoadingVC {
         //            case .failure(let error):
         //                self.presentGFAlertOnMainThread(title: "오류", message: error.rawValue, buttonTitle: "OK")
         //            }
-        //            self.isLoadingFollowers = false
+        //            self.isLoadingMoreFollowers = false
         //        }
         
         
@@ -100,6 +116,7 @@ class FollowerListVC: GFDataLoadingVC {
         // MARK: - Handling each error distinctively
             do {
                 let followers = try await NetworkManager.shared.getFollowers(for: username, page: page)
+//                let followers: [Follower] = [] > testing code
                 updateUI(with: followers)
                 dismissLoadingView()
             } catch {
@@ -126,14 +143,8 @@ class FollowerListVC: GFDataLoadingVC {
     private func updateUI(with followers: [Follower]) {
         if followers.count < 100 { self.hasMoreFollowers = false }
         self.followers.append(contentsOf: followers)
-        
-        if self.followers.isEmpty {
-            self.navigationItem.searchController = nil
-            let message = "해당 유저는 아직 팔로워가 없네요? 팔로우하는건 어떤가요?"
-            DispatchQueue.main.async { self.showEmptyStateView(with: message, in: self.view) }
-            return
-        }
         self.updateData(on: self.followers)
+        setNeedsUpdateContentUnavailableConfiguration()
     }
     
     private func configureDataSource() {
@@ -209,7 +220,7 @@ extension FollowerListVC: UICollectionViewDelegate {
         
         if offsetY > contentHeight - height {
             // fix in slow connection > users continually requesting for data before the first networkcall is finished or returned
-            guard hasMoreFollowers, !isLoadingFollowers else { return }
+            guard hasMoreFollowers, !isLoadingMoreFollowers else { return }
             page += 1
             getFollowers(username: username, page: page)
         }
@@ -240,6 +251,8 @@ extension FollowerListVC: UISearchResultsUpdating {
         isSearching         = true
         filteredFollowers   = followers.filter{ $0.login.lowercased().contains(filter.lowercased()) }
         updateData(on: filteredFollowers)
+        // Since I need to show the users that the data isn't available AFTER updating the followers.
+        setNeedsUpdateContentUnavailableConfiguration()
     }
 }
 
