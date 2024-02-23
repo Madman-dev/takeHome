@@ -42,7 +42,7 @@ class FavoriteVC: GFDataLoadingVC {
     
     private func getFavorites() {
         PersistenceManager.retrieveFavorites { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch result {
             case .success(let favorited):
@@ -92,10 +92,14 @@ extension FavoriteVC: UITableViewDelegate, UITableViewDataSource {
         guard editingStyle == .delete else { return }
         
         PersistenceManager.updateWith(follower: favorites[indexPath.row], actionType: .remove) { [weak self] error in
-            guard let self = self else { return }
-            guard let error = error else {
+            guard let self else { return }
+            guard let error else {
                 self.favorites.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
+                if favorites.isEmpty {
+                    // no need to create within DispatchQueue
+                    self.showEmptyStateView(with: "더이상 Favorite한 멤버가 없습니다", in: self.view)
+                }
                 return
             } // when error occurs, the current code structure would make data out of sync if removed tableview deletes data first
             DispatchQueue.main.async {

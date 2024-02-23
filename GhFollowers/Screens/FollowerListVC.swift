@@ -184,8 +184,10 @@ class FollowerListVC: GFDataLoadingVC {
         let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
         
         PersistenceManager.updateWith(follower: favorite, actionType: .add) { [weak self] error in
-            guard let self = self else { return }
-            guard let error = error else {
+            guard let self else { return }
+            
+            // Swift 5.7 update > no more need to guard let error = error
+            guard let error else {
                 DispatchQueue.main.async {
                     self.presentGFAlert(title: "성공!", message: "저장되었습니다.", buttonTitle: "Ok")
                 }
