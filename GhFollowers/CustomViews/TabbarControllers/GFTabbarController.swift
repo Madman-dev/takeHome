@@ -18,10 +18,11 @@ class GFTabbarController: UITabBarController {
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers             = [createSearchNC(), createFavoritesNC()]
         
-        let appearance              = UITabBarAppearance()
-        appearance.backgroundColor  = .systemBackground
-        tabBar.standardAppearance   = appearance
-        tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+        //removed tabbarAppearance
+//        let appearance              = UITabBarAppearance()
+//        appearance.backgroundColor  = .systemBackground
+//        tabBar.standardAppearance   = appearance
+//        tabBar.scrollEdgeAppearance = tabBar.standardAppearance
     }
     
     func createSearchNC() -> UINavigationController {
