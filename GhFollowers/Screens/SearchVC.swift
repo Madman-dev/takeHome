@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class SearchVC: UIViewController {
 
@@ -89,4 +90,9 @@ extension SearchVC: UITextFieldDelegate {
         pushFollowerListVC()
         return true
     }
+}
+
+
+#Preview {
+    SearchVC()
 }

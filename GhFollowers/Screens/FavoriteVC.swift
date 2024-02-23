@@ -8,7 +8,6 @@
 import UIKit
 
 class FavoriteVC: GFDataLoadingVC {
-    
     let tableview               = UITableView()
     var favorites: [Follower]   = []
     
@@ -21,6 +20,19 @@ class FavoriteVC: GFDataLoadingVC {
     override func viewIsAppearing(_ animated: Bool) {
         super.viewIsAppearing(animated)
         getFavorites()
+    }
+    
+    // Apple's default empty state view > for the following VC?
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if favorites.isEmpty {
+            var config = UIContentUnavailableConfiguration.empty()
+            config.image = .init(systemName: "star")
+            config.text = "더이상 없습니다."
+            config.secondaryText = "추가해보세요!"
+            contentUnavailableConfiguration = config
+        } else {
+            contentUnavailableConfiguration = nil
+        }
     }
     
     private func configureViewController() {
@@ -57,14 +69,11 @@ class FavoriteVC: GFDataLoadingVC {
     }
     
     private func updateUI(with favorited: [Follower]) {
-        if favorited.isEmpty {
-            self.showEmptyStateView(with: "오잉?\nFavorite한 멤버가 없습니다", in: self.view)
-        } else {
-            self.favorites = favorited
-            DispatchQueue.main.async {
-                self.tableview.reloadData()
-                self.view.bringSubviewToFront(self.tableview)
-            }
+        self.favorites = favorited
+        setNeedsUpdateContentUnavailableConfiguration()
+        DispatchQueue.main.async {
+            self.tableview.reloadData()
+            self.view.bringSubviewToFront(self.tableview)
         }
     }
 }
@@ -96,10 +105,7 @@ extension FavoriteVC: UITableViewDelegate, UITableViewDataSource {
             guard let error else {
                 self.favorites.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
-                if favorites.isEmpty {
-                    // no need to create within DispatchQueue
-                    self.showEmptyStateView(with: "더이상 Favorite한 멤버가 없습니다", in: self.view)
-                }
+                setNeedsUpdateContentUnavailableConfiguration()
                 return
             } // when error occurs, the current code structure would make data out of sync if removed tableview deletes data first
             DispatchQueue.main.async {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class GFButton: UIButton {
     override init(frame: CGRect) {
@@ -45,4 +46,8 @@ class GFButton: UIButton {
         configuration?.imagePadding = 6
         configuration?.imagePlacement = .leading // default image
     }
+}
+
+#Preview {
+    GFButton(color: .black, title: "Test Button", systemImageName: "pencil")
 }
