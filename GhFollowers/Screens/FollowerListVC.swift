@@ -68,6 +68,7 @@ class FollowerListVC: GFDataLoadingVC {
         
         NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
             guard let self = self else { return }
+            #warning("loading view가 아직 돌아가고 있어요")
             self.dismissLoadingView()
             
             switch result {
