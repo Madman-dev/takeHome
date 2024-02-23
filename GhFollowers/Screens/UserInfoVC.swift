@@ -39,15 +39,17 @@ class UserInfoVC: GFDataLoadingVC {
     }
     
     private func getUserInfo() {
-        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let user):
-                DispatchQueue.main.async { self.configureUIElementsWithUser(user: user) }
-                
-            case .failure(let error):
-                print(error.localizedDescription)
+        
+        Task {
+            do {
+                let user = try await NetworkManager.shared.getUserInfo(for: username)
+                configureUIElementsWithUser(user: user)
+            } catch {
+                if let gfError = error as? GFError {
+                    presentGFAlert(title: "뭔가 잘못됐어요", message: gfError.rawValue, buttonTitle: "Ok")
+                } else {
+                    presentDefaultError()
+                }
             }
         }
     }
@@ -119,7 +121,8 @@ class UserInfoVC: GFDataLoadingVC {
 extension UserInfoVC: GFRepoItemVCDelegate {
     func didTapGitHubProfile(for user: User) {
         guard let url = URL(string: user.htmlUrl) else {
-            presentGFAlertOnMainThread(title: "URL 오류", message: "URL이 없습니다.", buttonTitle: "Ok")
+            // how is the following function able to run on main Thread? the networkMaanger runs through async await. Not this
+            presentGFAlert(title: "URL 오류", message: "URL이 없습니다.", buttonTitle: "Ok")
             return
         }
         presentSafariVC(with: url)
@@ -129,7 +132,7 @@ extension UserInfoVC: GFRepoItemVCDelegate {
 extension UserInfoVC: GFFollowerItemVCDelegate {
     func didTapGetFollowers(for user: User) {
         guard user.followers != 0 else {
-            self.presentGFAlertOnMainThread(title: "No followers", message: "팔로워가 없어요!", buttonTitle: "😭")
+            self.presentGFAlert(title: "No followers", message: "팔로워가 없어요!", buttonTitle: "😭")
             return
         }
         delegate.didRequestFollower(for: user.login)

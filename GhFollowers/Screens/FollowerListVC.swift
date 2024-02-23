@@ -62,23 +62,64 @@ class FollowerListVC: GFDataLoadingVC {
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseId)
     }
     
-    private func getFollowers(username: String, page: Int) {
+    
+    /*
+     ** structured vs unstructure concurrency
+     - Unstructured
+     As I know, completion blocks return with data even after the function dies.
+     This creates unstructured concurrency as when the function is first called -> it initiates the network call and leaves the function -> when the data is collected, the data returns to the function and initates the rest of it. Making it unstructured (in terms of call)
+     
+     - Structured
+     everything goes in order
+     */
+    
+    private func getFollowers(username: String, page: Int) { // Following code 'async' call in a function that does not support concurrency
         showLoadingView()
         isLoadingFollowers = true
         
-        NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
-            guard let self = self else { return }
-            #warning("loading view가 아직 돌아가고 있어요")
-            self.dismissLoadingView()
-            
-            switch result {
-            case .success(let newFollowers):
-                self.updateUI(with: newFollowers)
-                
-            case .failure(let error):
-                self.presentGFAlertOnMainThread(title: "오류", message: error.rawValue, buttonTitle: "OK")
+        // MARK: - Initial Completion Handler implemented method
+        //        NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
+        //            guard let self = self else { return }
+        //            #warning("loading view가 아직 돌아가고 있어요")
+        //            self.dismissLoadingView()
+        //
+        //            switch result {
+        //            case .success(let newFollowers):
+        //                self.updateUI(with: newFollowers)
+        //
+        //            case .failure(let error):
+        //                self.presentGFAlertOnMainThread(title: "오류", message: error.rawValue, buttonTitle: "OK")
+        //            }
+        //            self.isLoadingFollowers = false
+        //        }
+        
+        
+        // MARK: - async await, concurrently
+        Task { // concurrency context
+        
+        // MARK: - Handling each error distinctively
+            do {
+                let followers = try await NetworkManager.shared.getFollowers(for: username, page: page)
+                updateUI(with: followers)
+                dismissLoadingView()
+            } catch {
+                if let gfError = error as? GFError {
+                    presentGFAlert(title: "Error 발생", message: gfError.rawValue, buttonTitle: "OK")
+                } else {
+                    // catching Every other error other than GFError
+                    presentDefaultError()
+                }
+                dismissLoadingView()
             }
-            self.isLoadingFollowers = false
+            
+        // MARK: - Handling error overall - Generically
+//            guard let followers = try? await NetworkManager.shared.getFollowers(for: username, page: page) else {
+//                presentDefaultError()
+//                dismissLoadingView()
+//                return
+//            }
+//            updateUI(with: followers)
+//            dismissLoadingView()
         }
     }
     
@@ -123,19 +164,20 @@ class FollowerListVC: GFDataLoadingVC {
     @objc func addButtonTapped() {
         showLoadingView()
         
-        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
-            guard let self = self else { return }
-            self.dismissLoadingView()
-            
-            switch result {
-            case .success(let user):
-                self.addUserToFavorites(user: user)
-                
-            case .failure(let error):
-                self.presentGFAlertOnMainThread(title: "뭔가 잘못됐습니다.", message: error.rawValue, buttonTitle: "OK")
+        Task {
+            do {
+                let user = try await NetworkManager.shared.getUserInfo(for: username)
+                addUserToFavorites(user: user)
+                dismissLoadingView()
+            } catch {
+                if let gfError = error as? GFError {
+                    presentGFAlert(title: "뭔가 잘못됐습니다.", message: gfError.rawValue, buttonTitle: "Ok")
+                } else {
+                    presentDefaultError()
+                }
+                dismissLoadingView()
             }
         }
-        
     }
     
     private func addUserToFavorites(user: User) {
@@ -144,10 +186,14 @@ class FollowerListVC: GFDataLoadingVC {
         PersistenceManager.updateWith(follower: favorite, actionType: .add) { [weak self] error in
             guard let self = self else { return }
             guard let error = error else {
-                self.presentGFAlertOnMainThread(title: "성공!", message: "저장되었습니다.", buttonTitle: "Ok")
+                DispatchQueue.main.async {
+                    self.presentGFAlert(title: "성공!", message: "저장되었습니다.", buttonTitle: "Ok")
+                }
                 return
             }
-            self.presentGFAlertOnMainThread(title: "뭔가 잘못됐어요", message: error.rawValue, buttonTitle: "Ok")
+            DispatchQueue.main.async {
+                self.presentGFAlert(title: "뭔가 잘못됐어요", message: error.rawValue, buttonTitle: "Ok")
+            }
         }
     }
 }

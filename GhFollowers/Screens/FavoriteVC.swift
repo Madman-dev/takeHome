@@ -49,7 +49,9 @@ class FavoriteVC: GFDataLoadingVC {
                 self.updateUI(with: favorited)
                 
             case .failure(let error):
-                self.presentGFAlertOnMainThread(title: "뭘까요", message: error.localizedDescription, buttonTitle: "Ok")
+                DispatchQueue.main.async {
+                    self.presentGFAlert(title: "뭘까요", message: error.localizedDescription, buttonTitle: "Ok")
+                }
             }
         }
     }
@@ -96,7 +98,9 @@ extension FavoriteVC: UITableViewDelegate, UITableViewDataSource {
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 return
             } // when error occurs, the current code structure would make data out of sync if removed tableview deletes data first
-            self.presentGFAlertOnMainThread(title: "오류가 발생했습니다.", message: error.rawValue, buttonTitle: "Ok")
+            DispatchQueue.main.async {
+                self.presentGFAlert(title: "오류가 발생했습니다.", message: error.rawValue, buttonTitle: "Ok")
+            }
         }
     }
 }
