@@ -15,6 +15,7 @@ class GFTabbarController: UITabBarController {
     }
     
     func configureTabbar() {
+        self.delegate = self
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers             = [createSearchNC(), createFavoritesNC()]
         
@@ -27,17 +28,38 @@ class GFTabbarController: UITabBarController {
     
     func createSearchNC() -> UINavigationController {
         let searchVC        = SearchVC()
-        searchVC.title      = "Search"
-        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        //        searchVC.title      = ""
+        //        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+
+        let customTabbarItem = UITabBarItem(title: "검색", image: UIImage(systemName: "pencil"), tag: 0)
+        searchVC.tabBarItem = customTabbarItem
         
         return UINavigationController(rootViewController: searchVC)
     }
     
     func createFavoritesNC() -> UINavigationController {
         let favoriteVC        = FavoriteVC()
-        favoriteVC.title      = "Favorite"
-        favoriteVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+//        favoriteVC.title      = "Favorite"
+//        favoriteVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        
+        let customTabbarItem = UITabBarItem(title: "커스텀", image: UIImage(systemName: "lasso"), tag: 1)
+        favoriteVC.tabBarItem = customTabbarItem
+        favoriteVC.tabBarItem.tag = 1
         
         return UINavigationController(rootViewController: favoriteVC)
+    }
+}
+
+extension GFTabbarController: UITabBarControllerDelegate {
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        if item.tag == 0 {
+            item.title = "눌림"
+            tabBar.items?[1].title = ""
+        }
+        
+        if item.tag == 1 {
+            item.title = "눌림"
+            tabBar.items?[0].title = ""
+        }
     }
 }
