@@ -52,14 +52,25 @@ class GFTabbarController: UITabBarController {
 
 extension GFTabbarController: UITabBarControllerDelegate {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        if item.tag == 0 {
-            item.title = "눌림"
+        switch item.tag {
+        case 0:
+            item.title = "눌렸나?"
             tabBar.items?[1].title = ""
-        }
-        
-        if item.tag == 1 {
-            item.title = "눌림"
+        case 1:
+            item.title = "Noolyutnat?"
             tabBar.items?[0].title = ""
+        default:
+            return
         }
+
+//        if item.tag == 0 {
+//            item.title = "눌림"
+//            tabBar.items?[1].title = ""
+//        }
+//        
+//        if item.tag == 1 {
+//            item.title = "눌림"
+//            tabBar.items?[0].title = ""
+//        }
     }
 }
