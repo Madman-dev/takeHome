@@ -33,3 +33,7 @@ class GFBodyLabel: UILabel {
         // label.numberOfLines = 0를 하지 않는 이유는 한 형식으로 고정을 하기 때문 - You never know what will happen
     }
 }
+
+#Preview {
+    return GFBodyLabel()
+}

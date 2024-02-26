@@ -31,3 +31,7 @@ class GFTitleLabel: UILabel {
         translatesAutoresizingMaskIntoConstraints = false
     }
 }
+
+#Preview {
+    return GFTitleLabel()
+}

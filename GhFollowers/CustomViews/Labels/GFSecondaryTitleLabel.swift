@@ -31,3 +31,7 @@ class GFSecondaryTitleLabel: UILabel {
         translatesAutoresizingMaskIntoConstraints = false
     }
 }
+
+#Preview {
+    return GFSecondaryTitleLabel(size: 25)
+}
