@@ -36,6 +36,7 @@ class FollowerListVC: GFDataLoadingVC {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    // default empty view State
     override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
         if followers.isEmpty && !isLoadingMoreFollowers {
             var config = UIContentUnavailableConfiguration.empty()

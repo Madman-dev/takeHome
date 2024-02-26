@@ -11,7 +11,6 @@ import SwiftUI
 class SearchVC: UIViewController {
 
     let logoImageView       = UIImageView()
-//    let usernameTextfield   = GFTextfield()
     let usernameTextfield = GFTextfield(withSpace: true)
     let callToActionButton    = GFButton(color: .systemGreen, title: "Get Followers")
     var isUsernameEntered: Bool { return !usernameTextfield.text!.isEmpty }
@@ -29,7 +28,7 @@ class SearchVC: UIViewController {
     
     override func viewIsAppearing(_ animated: Bool) {
         super.viewIsAppearing(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true) // why animate true?
         usernameTextfield.text = ""
     }
 
@@ -92,8 +91,3 @@ extension SearchVC: UITextFieldDelegate {
         return true
     }
 }
-
-
-//#Preview {
-//    SearchVC()
-//}
