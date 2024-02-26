@@ -11,7 +11,8 @@ import SwiftUI
 class SearchVC: UIViewController {
 
     let logoImageView       = UIImageView()
-    let usernameTextfield   = GFTextfield()
+//    let usernameTextfield   = GFTextfield()
+    let usernameTextfield = GFTextfield(withSpace: true)
     let callToActionButton    = GFButton(color: .systemGreen, title: "Get Followers")
     var isUsernameEntered: Bool { return !usernameTextfield.text!.isEmpty }
     
@@ -93,6 +94,6 @@ extension SearchVC: UITextFieldDelegate {
 }
 
 
-#Preview {
-    SearchVC()
-}
+//#Preview {
+//    SearchVC()
+//}
