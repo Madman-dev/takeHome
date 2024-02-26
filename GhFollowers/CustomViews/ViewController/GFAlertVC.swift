@@ -12,11 +12,14 @@ class GFAlertVC: UIViewController {
     let containerView   = GFAlertContainerView()
     let titleLabel      = GFTitleLabel(textAlignment: .center, fontSize: 20)
     let messageLabel    = GFBodyLabel(textAlignment: .center)
-    let actionButton    = GFButton(color: .systemPink, title: "OK!", systemImageName: "checkmark.circle")
+    let actionButton    = GFButton(color: .systemPink,
+                                   title: "OK!",
+                                   systemImageName: "checkmark.circle")
     
     var alertTitle: String?
     var alertMessage: String?
     var buttonTitle: String?
+//    var isButtonTapped: Bool?
     
     let padding: CGFloat = 20
 
@@ -66,6 +69,20 @@ class GFAlertVC: UIViewController {
         actionButton.setTitle(buttonTitle ?? "오류!", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         
+        actionButton.configurationUpdateHandler = {
+            [unowned self] button in
+            
+            // activity indicator
+//            var config = button.configuration
+//            config?.showsActivityIndicator = self.isButtonTapped ?? true
+//            button.configuration = config
+
+            // change button image when tapped
+//            var config = button.configuration
+//            config?.image = button.isHighlighted ? UIImage(systemName: "checkmark.circle") : UIImage(systemName: "lasso")
+//            button.configuration = config
+        }
+        
         NSLayoutConstraint.activate([
             actionButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -padding),
             actionButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
@@ -89,4 +106,8 @@ class GFAlertVC: UIViewController {
     @objc func dismissVC() {
         dismiss(animated: true)
     }
+}
+
+#Preview {
+    GFAlertVC(title: "흠", message: "메시지", buttonTitle: "OK")
 }

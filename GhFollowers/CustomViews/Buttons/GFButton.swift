@@ -45,6 +45,7 @@ class GFButton: UIButton {
         configuration?.image = UIImage(systemName: systemImageName)
         configuration?.imagePadding = 6
         configuration?.imagePlacement = .leading // default image
+        // configuration?.buttonSize = .large
     }
 }
 
