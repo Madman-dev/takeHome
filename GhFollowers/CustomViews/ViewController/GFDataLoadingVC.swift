@@ -44,3 +44,7 @@ class GFDataLoadingVC: UIViewController {
         view.addSubview(emptystateView)
     }
 }
+
+#Preview {
+    GFDataLoadingVC()
+}

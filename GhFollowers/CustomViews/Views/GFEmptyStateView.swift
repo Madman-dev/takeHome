@@ -60,3 +60,7 @@ class GFEmptyStateView: UIView {
         ])
     }
 }
+
+#Preview {
+    GFEmptyStateView()
+}

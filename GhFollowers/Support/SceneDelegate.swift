@@ -20,14 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         window?.rootViewController = GFTabbarController()
         window?.makeKeyAndVisible()
-        
-        configureNavigationBar()
     }
     
-    // give navigationBar item a color
-    func configureNavigationBar() {
-        UINavigationBar.appearance().tintColor = .systemGreen
-    }
+    // give navigationBar item a color > adding color no more
+//    func configureNavigationBar() {
+//        UINavigationBar.appearance().tintColor = .blue
+//    }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

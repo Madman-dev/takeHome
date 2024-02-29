@@ -52,3 +52,7 @@ class GFTextfield: UITextField {
         self.leftViewMode = .always
     }
 }
+
+#Preview {
+    GFTextfield()
+}

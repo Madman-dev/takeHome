@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 protocol UserInfoVCDelegate: AnyObject {
     func didRequestFollower(for username: String)

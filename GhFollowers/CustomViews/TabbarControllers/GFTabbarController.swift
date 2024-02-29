@@ -7,14 +7,14 @@
 
 import UIKit
 
-class GFTabbarController: UITabBarController {
+final class GFTabbarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTabbar()
     }
     
-    func configureTabbar() {
+    private func configureTabbar() {
         self.delegate = self
         UITabBar.appearance().tintColor = .systemGreen
         viewControllers             = [createSearchNC(), createFavoritesNC()]
@@ -26,7 +26,7 @@ class GFTabbarController: UITabBarController {
 //        tabBar.scrollEdgeAppearance = tabBar.standardAppearance
     }
     
-    func createSearchNC() -> UINavigationController {
+    private func createSearchNC() -> UINavigationController {
         let searchVC        = SearchVC()
         //        searchVC.title      = ""
         //        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
@@ -37,14 +37,13 @@ class GFTabbarController: UITabBarController {
         return UINavigationController(rootViewController: searchVC)
     }
     
-    func createFavoritesNC() -> UINavigationController {
+    private func createFavoritesNC() -> UINavigationController {
         let favoriteVC        = FavoriteVC()
 //        favoriteVC.title      = "Favorite"
 //        favoriteVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
         
-        let customTabbarItem = UITabBarItem(title: "커스텀", image: UIImage(systemName: "lasso"), tag: 1)
+        let customTabbarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "lasso"), tag: 1)
         favoriteVC.tabBarItem = customTabbarItem
-        favoriteVC.tabBarItem.tag = 1
         
         return UINavigationController(rootViewController: favoriteVC)
     }
@@ -53,12 +52,8 @@ class GFTabbarController: UITabBarController {
 extension GFTabbarController: UITabBarControllerDelegate {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         switch item.tag {
-        case 0:
-            item.title = "눌렸나?"
-            tabBar.items?[1].title = ""
-        case 1:
-            item.title = "Noolyutnat?"
-            tabBar.items?[0].title = ""
+        case 0: self.title = "검색"
+        case 1: self.title = "Favorite"
         default:
             return
         }

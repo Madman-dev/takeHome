@@ -272,3 +272,7 @@ extension FollowerListVC: UserInfoVCDelegate {
         getFollowers(username: username, page: page)
     }
 }
+
+#Preview {
+    FollowerListVC(username: "madman-dev")
+}

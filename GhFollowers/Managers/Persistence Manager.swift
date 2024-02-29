@@ -42,6 +42,25 @@ enum PersistenceManager {
         }
     }
     
+//    static func updateWith(follower: Follower, actionType: PersistenceActionType) async throws -> GFError {
+//        retrieveFavorites()
+//    }
+ 
+    
+    // why change the initial @escaping to async throws?? > no need use completion handlers
+//    static func retrieveFavorites() async throws -> [Follower] {
+//        guard let favoriteData = defaults.object(forKey: keys.favorites) as? Data else { return [] }
+//        
+//        do {
+//            let decoder = JSONDecoder()
+//            let favorite = try decoder.decode([Follower].self, from: favoriteData)
+//            return favorite
+//        } catch {
+//            throw GFError.failToPersist
+//        }
+//    }
+    
+    
     static func retrieveFavorites(completed: @escaping (Result<[Follower], GFError>) -> Void) {
         guard let favoritesData = defaults.object(forKey: keys.favorites) as? Data else {
             completed(.success([]))

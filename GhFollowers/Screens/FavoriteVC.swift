@@ -114,3 +114,7 @@ extension FavoriteVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
+
+#Preview {
+    FavoriteVC()
+}

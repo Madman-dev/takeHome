@@ -33,3 +33,7 @@ class GFAvatarImageView: UIImageView {
         }
     }
 }
+
+#Preview {
+    GFAvatarImageView(frame: .zero)
+}

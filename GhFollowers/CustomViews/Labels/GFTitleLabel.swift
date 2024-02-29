@@ -24,6 +24,7 @@ class GFTitleLabel: UILabel {
     }
     
     private func configure() {
+        text = "테스팅"
         textColor                 = .label
         adjustsFontSizeToFitWidth = true
         minimumScaleFactor        = 0.9
@@ -33,5 +34,5 @@ class GFTitleLabel: UILabel {
 }
 
 #Preview {
-    return GFTitleLabel()
+    GFTitleLabel(textAlignment: .center, fontSize: 40)
 }
